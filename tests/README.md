@@ -1,0 +1,55 @@
+# Проверки расписания
+
+Сайт остаётся статическим: для его запуска установка npm-пакетов не нужна.
+
+## Браузерные проверки
+
+Из корня сайта запустите сервер:
+
+```sh
+python3 -m http.server 8000 --bind 127.0.0.1
+```
+
+В отдельном терминале установите инструменты вне папки сайта и запустите проверки:
+
+```sh
+npm install --prefix /tmp/salon-tests playwright@1.62.1 @firebase/rules-unit-testing@6.0.0 firebase@13.0.0 firebase-tools@15.33.0
+NODE_PATH=/tmp/salon-tests/node_modules node tests/booking-browser.cjs
+NODE_PATH=/tmp/salon-tests/node_modules node tests/admin-browser.cjs
+```
+
+Нужен Chromium. Тесты используют `/usr/bin/chromium`, если он установлен, либо браузер Playwright. Другой путь можно передать через `CHROMIUM_PATH`. Для браузера Playwright:
+
+```sh
+PLAYWRIGHT_BROWSERS_PATH=/tmp/salon-browsers node /tmp/salon-tests/node_modules/playwright/cli.js install chromium
+```
+
+При запуске тестов тогда также задайте `PLAYWRIGHT_BROWSERS_PATH=/tmp/salon-browsers`. Адрес другого локального сервера можно передать через `SALON_TEST_URL`.
+
+Браузерные тесты используют имитацию Firebase и не обращаются к настоящей базе. Они проверяют:
+
+- подходящих мастеров для выбранной услуги;
+- отправку имени мастера в WhatsApp без подключённой базы;
+- отображение и отключение занятых окон;
+- обновление расписания, сброс окна, которое занял другой клиент;
+- независимые расписания мастеров;
+- успешную отправку и восстановление формы после отказа записи;
+- расписание администратора, перенос, отмену, восстановление, добавление и удаление;
+- чтение актуальной записи перед отменой после переноса другим администратором.
+
+## Проверка настоящих правил Firestore
+
+Нужны Java 21 и доступ к `storage.googleapis.com` для загрузки официального эмулятора Firebase. Создайте конфигурацию вне публикуемой папки сайта:
+
+```sh
+cat > /tmp/salon-tests/firebase.json <<'JSON'
+{"firestore":{"rules":"/workspace/Salon-Website/firestore.rules"},"emulators":{"firestore":{"host":"127.0.0.1","port":8080},"ui":{"enabled":false}}}
+JSON
+FIREBASE_EMULATORS_PATH=/tmp/salon-emulators XDG_CONFIG_HOME=/tmp/salon-config CI=true node /tmp/salon-tests/node_modules/firebase-tools/lib/bin/firebase.js emulators:exec --config /tmp/salon-tests/firebase.json --only firestore --project demo-salon "NODE_PATH=/tmp/salon-tests/node_modules node tests/firestore-rules.cjs"
+```
+
+Запускайте из корня сайта. Правила загружает сам тест; Почта в условии `isAdmin()` заменяется только в памяти на тестовую; исходные правила не меняются. Используется отдельный проект `demo-salon`, реальные данные не затрагиваются.
+
+Проверки правил: два одновременных клиента на одно окно, закрытые персональные данные, запрет записи без резервирования, ограничения услуг мастеров, запрет частичной отмены/переноса, освобождение окон, миграция старых записей и конфликт при восстановлении отменённой записи.
+
+В облачной среде 8 октября 2026 года прошли браузерные проверки и все пять групп проверок настоящих правил на официальном эмуляторе Firestore. Проверена гонка двух клиентов за одно окно. Эти проверки не подтверждают подключение к реальному проекту Firebase: его конфигурация пока не заполнена.

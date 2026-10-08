@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#6e4b3b">
+  <title>Кабинет администратора — Салон «11»</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Playfair+Display:wght@500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+  <noscript><p class="center-msg">Для работы кабинета нужен включённый JavaScript.</p></noscript>
+
+  <!-- Firebase ещё не подключён -->
+  <section id="setup" class="center" hidden>
+    <div class="panel">
+      <h1>Кабинет пока не подключён</h1>
+      <p>Чтобы заявки с сайта попадали сюда, нужно один раз подключить облачную базу Firebase.</p>
+      <p>Откройте файл <b>SETUP.md</b> в папке <b>salon</b> и выполните шаги по порядку. Это занимает около 15 минут.</p>
+    </div>
+  </section>
+
+  <!-- Вход -->
+  <section id="login" class="center" hidden>
+    <form id="login-form" class="panel" novalidate>
+      <div class="brand"><b>11</b><span>Кабинет администратора</span></div>
+      <label>Почта
+        <input type="email" id="login-email" autocomplete="username" required>
+      </label>
+      <label>Пароль
+        <input type="password" id="login-pass" autocomplete="current-password" required>
+      </label>
+      <p class="error" id="login-error" role="alert" hidden></p>
+      <button type="submit" class="btn btn-main" id="login-submit">Войти</button>
+    </form>
+  </section>
+
+  <!-- Кабинет -->
+  <div id="app" hidden>
+    <header class="top">
+      <div class="brand"><b>11</b><span>Кабинет администратора</span></div>
+      <div class="who">
+        <span id="who"></span>
+        <button type="button" class="btn btn-small" id="logout">Выйти</button>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <div class="bar">
+        <div class="chips" id="chips" role="tablist" aria-label="Фильтр записей"></div>
+        <div class="tools">
+          <input type="search" id="search" placeholder="Поиск по имени или телефону" aria-label="Поиск">
+          <button type="button" class="btn btn-main" id="add">+ Новая запись</button>
+        </div>
+      </div>
+
+      <section class="schedule-panel" aria-label="Расписание мастера">
+        <h2>Расписание мастера</h2>
+        <div class="row">
+          <label>Мастер<select id="schedule-master"></select></label>
+          <label>Дата<input type="date" id="schedule-date"></label>
+        </div>
+        <p id="schedule-hint" role="status"></p>
+        <div id="schedule-slots" class="time-slots"></div>
+      </section>
+      <div id="list" class="list"></div>
+      <p id="empty" class="empty" hidden>Здесь пока нет записей.</p>
+    </main>
+  </div>
+
+  <!-- Окно добавления и редактирования записи -->
+  <dialog id="editor">
+    <form id="editor-form" novalidate>
+      <h2 id="editor-title">Новая запись</h2>
+
+      <label>Имя клиента
+        <input type="text" id="e-name" maxlength="80">
+      </label>
+      <label>Телефон
+        <input type="tel" id="e-phone" maxlength="20" inputmode="tel" placeholder="8 777 123 45 67">
+      </label>
+      <label>Услуга
+        <select id="e-service"></select>
+      </label>
+      <label>Мастер
+        <select id="e-master"><option value="">Выберите мастера</option></select>
+      </label>
+      <div class="row">
+        <label>Дата
+          <input type="date" id="e-date">
+        </label>
+        <label>Время
+          <select id="e-time"></select>
+        </label>
+      </div>
+      <label>Статус
+        <select id="e-status">
+          <option value="new">Новая</option>
+          <option value="confirmed">Подтверждена</option>
+          <option value="done">Выполнена</option>
+          <option value="cancelled">Отменена</option>
+        </select>
+      </label>
+      <label>Комментарий
+        <textarea id="e-comment" rows="2" maxlength="300"></textarea>
+      </label>
+
+      <p class="error" id="editor-error" role="alert" hidden></p>
+      <div class="dialog-actions">
+        <button type="button" class="btn btn-small" id="editor-cancel">Отмена</button>
+        <button type="submit" class="btn btn-main" id="editor-save">Сохранить</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <script src="firebase-config.js"></script>
+  <script src="schedule.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>
