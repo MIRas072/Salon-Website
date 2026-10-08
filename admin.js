@@ -126,8 +126,10 @@
     var groups = {};
     bookings.forEach(function (b) {
       if (b.status === 'new' || b.status === 'confirmed') {
-        var key = (b.masterId || 'unassigned') + ' ' + b.date + ' ' + b.time;
-        (groups[key] = groups[key] || []).push(b.id);
+        schedule.slotTimes(b).forEach(function (time) {
+          var key = (b.masterId || 'unassigned') + ' ' + b.date + ' ' + time;
+          (groups[key] = groups[key] || []).push(b.id);
+        });
       }
     });
     var set = {};
@@ -182,6 +184,7 @@
 
     card.appendChild(h('div', 'who-line', b.name));
     card.appendChild(h('div', 'service', b.service));
+    card.appendChild(h('div', 'sub', (b.durationMinutes || 30) + ' мин'));
     card.appendChild(h('div', 'sub', schedule.masterName(b.masterId)));
 
     var phone = h('div', 'sub');
@@ -192,6 +195,8 @@
 
     if (b.comment) card.appendChild(h('div', 'comment', b.comment));
     if (conflict) card.appendChild(h('div', 'warn', 'Это время уже занято другой записью'));
+    var oldColoring = schedule.active(b) && schedule.duration(b.service) === 60 && b.durationMinutes !== 60;
+    if (oldColoring) card.appendChild(h('div', 'warn', 'Старая запись: занято только 30 минут. Установите 1 час и проверьте соседнее окно.'));
 
     var meta = (b.source === 'site' ? 'Заявка с сайта' : 'Добавлено вручную');
     var created = fmtCreated(b);
@@ -199,6 +204,11 @@
     card.appendChild(h('div', 'sub', meta));
 
     var actions = h('div', 'actions');
+    if (oldColoring) actions.appendChild(actionButton('Установить 1 час', '', function () {
+      schedule.saveAdmin(db, b.id, {}, false)
+        .then(function () { toast('Для окрашивания зарезервирован 1 час'); })
+        .catch(function (err) { toast(err.message || 'Не удалось обновить длительность'); });
+    }));
     if (b.status === 'new') {
       actions.appendChild(actionButton('Подтвердить', 'btn-ok', function () { setStatus(b, 'confirmed'); }));
       actions.appendChild(actionButton('Отменить', 'btn-danger', function () { setStatus(b, 'cancelled'); }));
@@ -286,7 +296,7 @@
       var og = document.createElement('optgroup');
       og.label = group[0];
       group[1].forEach(function (name) {
-        var o = h('option', null, name);
+        var o = h('option', null, name + (schedule.duration(name) === 60 ? ' — 1 час' : ''));
         o.value = name;
         og.appendChild(o);
       });
@@ -334,12 +344,16 @@
   function renderEditorTimes() {
     var masterId = $('#e-master').value;
     var date = $('#e-date').value;
+    var occupied = {};
+    bookings.forEach(function (b) {
+      if (schedule.active(b) && b.masterId === masterId && b.date === date && (!editing || b.id !== editing.id)) {
+        schedule.slotTimes(b).forEach(function (t) { occupied[t] = true; });
+      }
+    });
     Array.from($('#e-time').options).forEach(function (o) {
-      var busy = bookings.some(function (b) {
-        return schedule.active(b) && b.masterId === masterId && b.date === date && b.time === o.value &&
-          (!editing || b.id !== editing.id);
-      });
-      o.textContent = o.value + (busy ? ' — Занято' : '');
+      var fits = schedule.fits($('#e-service').value, o.value);
+      var busy = !schedule.available($('#e-service').value, o.value, occupied);
+      o.textContent = o.value + (!fits ? ' — Не успеем до закрытия' : busy ? ' — Занято' : '');
       o.disabled = busy;
       if (busy && o.selected) $('#e-time').value = '';
     });
@@ -357,7 +371,7 @@
       : 'Выберите свободное окно, чтобы добавить запись. Занятое окно открывает запись.';
     schedule.times.forEach(function (time) {
       var booked = bookings.find(function (b) {
-        return schedule.active(b) && b.masterId === masterId && b.date === date && b.time === time;
+        return schedule.active(b) && b.masterId === masterId && b.date === date && schedule.slotTimes(b).indexOf(time) !== -1;
       });
       var button = h('button', 'time-slot' + (booked ? ' busy' : ''), time + (booked ? ' · ' + booked.name : ' · Свободно'));
       button.type = 'button';

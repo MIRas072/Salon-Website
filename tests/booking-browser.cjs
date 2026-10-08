@@ -36,8 +36,9 @@ const { chromium } = require('playwright');
     await page.addInitScript(() => {
       window.testState = {time: '16:00', masterId: 'master-1', commitFails: false, subscriptions: [], batches: []};
       function snap(subscription) {
-        const rows = window.testState.time && subscription.masterId === window.testState.masterId
-          ? [{data: () => ({time: window.testState.time})}] : [];
+        const times = window.testState.times || [window.testState.time];
+        const rows = subscription.masterId === window.testState.masterId
+          ? times.filter(Boolean).map(time=>({data: () => ({time})})) : [];
         return {metadata: {fromCache: !!window.testState.fromCache}, docs: rows};
       }
       const db = {
@@ -60,6 +61,7 @@ const { chromium } = require('playwright');
             window.testState.batches.push(ops);
             if (window.testState.commitFails) return Promise.reject({code:'permission-denied'});
             window.testState.time = ops[1].data.time;
+            window.testState.times = ops.slice(1).map(op=>op.data.time);
             window.testState.masterId = ops[1].data.masterId;
             window.emitAvailability();
             return Promise.resolve();
@@ -109,6 +111,37 @@ const { chromium } = require('playwright');
     assert.match(await page.locator('#success-text').innerText(), /16:30, Арай/);
     assert.equal(await page.evaluate(() => window.testState.batches.at(-1).length), 2);
     console.log('PASS: occupied window disabled, realtime invalidation, independent masters, cached data blocked, stale callbacks ignored, failure recovery, atomic booking payload');
+    await page.goto(base);
+    await page.evaluate(()=>localStorage.removeItem('salonLastBooking'));
+    await page.locator('#f-service').selectOption('Окрашивание в один тон');
+    await page.locator('#f-master').selectOption('master-1');
+    await page.locator('#f-date').fill('2099-10-09');
+    await page.waitForFunction(()=>!document.querySelector('#f-time').disabled);
+    assert.match(await page.locator('#availability-hint').innerText(),/1 час/);
+    assert.equal(await page.locator('#f-time option[value="15:30"]').evaluate(o=>o.disabled),true);
+    assert.equal(await page.locator('#f-time option[value="16:30"]').evaluate(o=>o.disabled),false);
+    assert.equal(await page.locator('#f-time option[value="19:30"]').evaluate(o=>o.disabled),true);
+    await page.locator('#f-time').selectOption('17:00');
+    await page.evaluate(()=>{window.testState.time='17:30';window.emitAvailability();});
+    assert.equal(await page.locator('#f-time').inputValue(),'');
+    assert.equal(await page.locator('#f-time option[value="17:00"]').evaluate(o=>o.disabled),true);
+    await page.locator('#f-service').selectOption('Женская стрижка');
+    await page.waitForFunction(()=>!document.querySelector('#f-time').disabled);
+    assert.equal(await page.locator('#f-time option[value="17:00"]').evaluate(o=>o.disabled),false);
+    await page.locator('#f-service').selectOption('Окрашивание в один тон');
+    await page.locator('#f-master').selectOption('master-2');
+    await page.waitForFunction(()=>!document.querySelector('#f-time').disabled);
+    await page.locator('#f-name').fill('Окрашивание');
+    await page.locator('#f-phone').fill('87771234567');
+    await page.locator('#f-time').selectOption('17:00');
+    await page.locator('#form-submit').click();
+    await page.locator('#booking-success').waitFor({state:'visible'});
+    assert.match(await page.locator('#success-text').innerText(),/1 час/);
+    const payload = await page.evaluate(()=>window.testState.batches.at(-1));
+    assert.equal(payload[0].data.durationMinutes,60);
+    assert.deepEqual(payload.slice(1).map(op=>op.data.time),['17:00','17:30']);
+    assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth > innerWidth),false);
+    console.log('PASS: coloring needs consecutive windows; next-half realtime conflicts invalidate selection, closing limits apply, submission reserves one hour');
     assert.deepEqual(errors, []);
   } finally { await browser.close(); }
 })().catch(error => { console.error(error); process.exitCode = 1; });

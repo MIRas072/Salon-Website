@@ -12,7 +12,7 @@ service cloud.firestore {
 
     function validPublicBooking() {
       let d = request.resource.data;
-      return d.keys().hasOnly(['name', 'phone', 'service', 'masterId', 'date', 'time', 'comment', 'status', 'source', 'createdAt'])
+      return d.keys().hasOnly(['name', 'phone', 'service', 'masterId', 'date', 'time', 'durationMinutes', 'comment', 'status', 'source', 'createdAt'])
         && d.keys().hasAll(['name', 'phone', 'service', 'masterId', 'date', 'time', 'status', 'source', 'createdAt'])
         && d.name is string && d.name.size() > 0 && d.name.size() <= 80
         && d.phone is string && d.phone.size() >= 6 && d.phone.size() <= 20
@@ -32,6 +32,16 @@ service cloud.firestore {
       return d.masterId + '_' + d.date + '_' + d.time;
     }
 
+    function nextTime(d) {
+      let parts = d.time.split(':');
+      return parts[1] == '00' ? parts[0] + ':30' : string(int(parts[0]) + 1) + ':00';
+    }
+
+    function occupies(b, s) {
+      return b.masterId == s.masterId && b.date == s.date
+        && (b.time == s.time || (b.get('durationMinutes', 30) == 60 && nextTime(b) == s.time));
+    }
+
     function validAppointment(d) {
       let male = ['Мужская стрижка', 'Детская стрижка (мужской зал)', 'Модельная стрижка'];
       let all = ['Женская стрижка', 'Детская стрижка (женский зал)', 'Окрашивание в один тон',
@@ -42,19 +52,43 @@ service cloud.firestore {
           || (d.masterId == 'master-2' && d['service'] != 'Свадебный образ')
           || (d.masterId == 'master-3' && d['service'] in male))
         && d.date is string && d.date.matches('[0-9]{4}-[0-9]{2}-[0-9]{2}')
-        && d.time is string && d.time.matches('1[0-9]:(00|30)');
+        && d.time is string && d.time.matches('1[0-9]:(00|30)')
+        && (d['service'] == 'Окрашивание в один тон'
+          ? d.get('durationMinutes', 0) == 60 && d.time != '19:30'
+          : d.get('durationMinutes', 30) == 30);
+    }
+
+    function reservedTime(d, id, time) {
+      let key = d.masterId + '_' + d.date + '_' + time;
+      let s = getAfter(/databases/$(database)/documents/availability/$(key)).data;
+      return s.bookingId == id && s.masterId == d.masterId && s.date == d.date && s.time == time;
     }
 
     function hasReservation(d, id) {
-      let s = getAfter(/databases/$(database)/documents/availability/$(slotId(d))).data;
-      return s.bookingId == id && s.masterId == d.masterId && s.date == d.date && s.time == d.time;
+      return reservedTime(d, id, d.time)
+        && (d.get('durationMinutes', 30) != 60 || reservedTime(d, id, nextTime(d)));
+    }
+
+    function previousTimeReleased(old, time) {
+      let key = old.masterId + '_' + old.date + '_' + time;
+      return (active(request.resource.data)
+          && occupies(request.resource.data, {'masterId': old.masterId, 'date': old.date, 'time': time}))
+        || !existsAfter(/databases/$(database)/documents/availability/$(key));
     }
 
     function releasedPrevious(id) {
       let old = resource.data;
       return !('masterId' in old) || !active(old)
-        || (active(request.resource.data) && slotId(old) == slotId(request.resource.data))
-        || !existsAfter(/databases/$(database)/documents/availability/$(slotId(old)));
+        || (previousTimeReleased(old, old.time)
+          && (old.get('durationMinutes', 30) != 60 || previousTimeReleased(old, nextTime(old))));
+    }
+
+    function deletedReservation() {
+      let old = resource.data;
+      let second = old.masterId + '_' + old.date + '_' + nextTime(old);
+      return !existsAfter(/databases/$(database)/documents/availability/$(slotId(old)))
+        && (old.get('durationMinutes', 30) != 60
+          || !existsAfter(/databases/$(database)/documents/availability/$(second)));
     }
 
     // Заявки: любой посетитель может только создать новую заявку.
@@ -70,7 +104,7 @@ service cloud.firestore {
         && (!active(request.resource.data)
           || (validAppointment(request.resource.data) && hasReservation(request.resource.data, id)));
       allow delete: if isAdmin() && (!('masterId' in resource.data) || !active(resource.data)
-        || !existsAfter(/databases/$(database)/documents/availability/$(slotId(resource.data))));
+        || deletedReservation());
     }
 
     // Публичное расписание содержит только время, мастера и технический ID.
@@ -90,13 +124,13 @@ service cloud.firestore {
       let path = /databases/$(database)/documents/bookings/$(s.bookingId);
       let b = getAfter(path).data;
       return (isAdmin() || !exists(path)) && active(b) && validAppointment(b)
-        && s.masterId == b.masterId && s.date == b.date && s.time == b.time;
+        && occupies(b, s);
     }
 
     function reservationReleased(s) {
       let path = /databases/$(database)/documents/bookings/$(s.bookingId);
       return !existsAfter(path) || !active(getAfter(path).data)
-        || slotId(getAfter(path).data) != slotId(s);
+        || !occupies(getAfter(path).data, s);
     }
 
     // Всё остальное закрыто.

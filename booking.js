@@ -42,8 +42,10 @@
     schedule.times.forEach(function (t) {
       var past = dateEl.value && schedule.isPast(dateEl.value, t);
       var busy = !!occupied[t];
-      var disabled = !availabilityReady || busy || past;
-      var label = t + (busy ? ' — Занято' : past ? ' — Прошло' : configured && availabilityReady ? ' — Свободно' : '');
+      var fits = schedule.fits(serviceEl.value, t);
+      var overlap = !schedule.available(serviceEl.value, t, occupied);
+      var disabled = !availabilityReady || overlap || past;
+      var label = t + (busy ? ' — Занято' : !fits ? ' — Не успеем до закрытия' : overlap ? ' — Нет часа подряд' : past ? ' — Прошло' : configured && availabilityReady ? ' — Свободно' : '');
       var option = new Option(label, t);
       option.disabled = disabled;
       timeEl.appendChild(option);
@@ -52,6 +54,7 @@
       button.className = 'time-slot' + (busy ? ' busy' : '');
       button.textContent = label;
       if (busy) button.title = 'На это время уже записан другой клиент';
+      else if (overlap && fits) button.title = 'Следующие 30 минут заняты другим клиентом';
       button.disabled = disabled || sending;
       button.setAttribute('aria-pressed', String(chosen === t && !disabled));
       button.addEventListener('click', function () {
@@ -63,6 +66,13 @@
       if (chosen === t && !disabled) timeEl.value = t;
     });
     if (chosen && !timeEl.value) showError('Выбранное время недоступно. Выберите свободное окно');
+    if (configured && availabilityReady) {
+      var free = schedule.times.filter(function (t) {
+        return schedule.available(serviceEl.value, t, occupied) && !schedule.isPast(dateEl.value, t);
+      }).length;
+      availabilityHint.textContent = (schedule.duration(serviceEl.value) === 60 ? 'Окрашивание занимает 1 час. ' : '') +
+        (free ? 'Свободных окон: ' + free + '. Занятые окна выбрать нельзя.' : 'На эту дату свободных окон нет. Выберите другую дату или мастера.');
+    }
     submitEl.disabled = sending || (configured && !availabilityReady);
   }
 
@@ -95,10 +105,7 @@
           availabilityReady = !snap.metadata.fromCache;
           occupied = {};
           snap.docs.forEach(function (doc) { occupied[doc.data().time] = true; });
-          var free = schedule.times.filter(function (t) { return !occupied[t] && !schedule.isPast(date, t); }).length;
-          availabilityHint.textContent = availabilityReady
-            ? (free ? 'Свободных окон: ' + free + '. Занятые окна выбрать нельзя.' : 'На эту дату свободных окон нет. Выберите другую дату или мастера.')
-            : 'Ожидаем актуальное расписание. Проверьте интернет.';
+          if (!availabilityReady) availabilityHint.textContent = 'Ожидаем актуальное расписание. Проверьте интернет.';
           renderTimes();
         }, function () {
           if (version !== availabilityVersion) return;
@@ -176,7 +183,8 @@
     details = details || { service: serviceEl.value, date: dateEl.value, time: timeEl.value, masterId: masterEl.value };
     $('success-text').textContent =
       'Спасибо, ' + name + '! Заявка на «' + details.service + '», ' + formatDate(details.date) +
-      ' в ' + details.time + ', ' + schedule.masterName(details.masterId) + ', принята. Мы позвоним или напишем на номер ' + phone +
+      ' в ' + details.time + ', ' + schedule.masterName(details.masterId) +
+      (schedule.duration(details.service) === 60 ? ' (1 час)' : '') + ', принята. Мы позвоним или напишем на номер ' + phone +
       ', чтобы подтвердить запись.';
     form.hidden = true;
     successEl.hidden = false;
@@ -210,7 +218,7 @@
     if (digits.length < 10 || digits.length > 15) { showError('Введите номер телефона, например 8 777 123 45 67'); phoneEl.focus(); return; }
     if (!dateEl.value) { showError('Выберите дату'); dateEl.focus(); return; }
     if (!timeEl.value) { showError('Выберите время'); timeEl.focus(); return; }
-    if (!availabilityReady || occupied[timeEl.value] || schedule.isPast(dateEl.value, timeEl.value)) {
+    if (!availabilityReady || !schedule.available(serviceEl.value, timeEl.value, occupied) || schedule.isPast(dateEl.value, timeEl.value)) {
       showError('Это время недоступно. Выберите свободное окно'); return;
     }
     if (sending) return;

@@ -22,9 +22,27 @@
     }).formatToParts(new Date()).forEach(function (p) { result[p.type] = p.value; });
     return result;
   }
+  function duration(service) { return service === 'Окрашивание в один тон' ? 60 : 30; }
+  function slotTimes(b) {
+    var index = times.indexOf(b.time);
+    // Старые записи без длительности резервировали только одно окно.
+    var count = b.durationMinutes === 60 ? 2 : 1;
+    return index < 0 ? [] : times.slice(index, index + count);
+  }
+  function fits(service, time) {
+    var index = times.indexOf(time);
+    return index >= 0 && index + duration(service) / 30 <= times.length;
+  }
   window.SalonSchedule = {
     masters: masters,
     times: times,
+    duration: duration,
+    slotTimes: slotTimes,
+    fits: fits,
+    available: function (service, time, occupied) {
+      return fits(service, time) && slotTimes({time: time, durationMinutes: duration(service)})
+        .every(function (t) { return !occupied[t]; });
+    },
     today: function () {
       var p = localParts();
       return p.year + '-' + p.month + '-' + p.day;
@@ -57,11 +75,16 @@
       if (Array.from(select.options).some(function (o) { return o.value === previous; })) select.value = previous;
     },
     reserve: function (db, data) {
+      data = Object.assign({}, data, { durationMinutes: duration(data.service) });
+      if (!fits(data.service, data.time)) return Promise.reject(new Error('Услуга должна закончиться до 20:00'));
       var booking = db.collection('bookings').doc();
-      var slot = db.collection('availability').doc(this.slotId(data));
       var batch = db.batch();
       batch.set(booking, data);
-      batch.set(slot, { masterId: data.masterId, date: data.date, time: data.time, bookingId: booking.id });
+      var self = this;
+      slotTimes(data).forEach(function (time) {
+        var slotData = { masterId: data.masterId, date: data.date, time: time, bookingId: booking.id };
+        batch.set(db.collection('availability').doc(self.slotId(slotData)), slotData);
+      });
       return batch.commit();
     },
     // Чтение актуальной записи и слотов внутри транзакции защищает от гонок
@@ -74,24 +97,40 @@
         if (id && !before.exists) throw new Error('Запись уже удалена');
         var old = before ? before.data() : null;
         var next = remove ? null : Object.assign({}, old || {}, changes);
+        if (next) next.durationMinutes = duration(next.service);
         if (next && self.active(next) && !next.masterId) {
           throw new Error('Сначала назначьте мастера через «Изменить»');
         }
         if (next && self.active(next) && next.masterId && !self.canServe(next.masterId, next.service)) throw new Error('Мастер не оказывает выбранную услугу');
-        var oldSlot = old && old.masterId && self.active(old)
-          ? db.collection('availability').doc(self.slotId(old)) : null;
-        var nextSlot = next && self.active(next)
-          ? db.collection('availability').doc(self.slotId(next)) : null;
-        var oldSnap = oldSlot ? await tx.get(oldSlot) : null;
-        var nextSnap = nextSlot ? await tx.get(nextSlot) : null;
-        if (nextSnap && nextSnap.exists && nextSnap.data().bookingId !== ref.id) {
-          throw new Error('Это время у мастера уже занято. Выберите другое окно');
+        if (next && self.active(next) && !fits(next.service, next.time)) throw new Error('Услуга должна закончиться до 20:00');
+        function reservations(b) {
+          return b && b.masterId && self.active(b) ? slotTimes(b).map(function (time) {
+            return { masterId: b.masterId, date: b.date, time: time, bookingId: ref.id };
+          }) : [];
         }
-        if (oldSnap && oldSnap.exists && oldSnap.data().bookingId === ref.id &&
-            (!nextSlot || oldSlot.id !== nextSlot.id)) tx.delete(oldSlot);
-        if (nextSlot && !nextSnap.exists) {
-          tx.set(nextSlot, { masterId: next.masterId, date: next.date, time: next.time, bookingId: ref.id });
-        }
+        var oldSlots = reservations(old);
+        var nextSlots = reservations(next);
+        var refs = {};
+        oldSlots.concat(nextSlots).forEach(function (s) {
+          var key = self.slotId(s);
+          refs[key] = db.collection('availability').doc(key);
+        });
+        var snaps = {};
+        // Все чтения происходят до первой записи, включая вторую половину часа.
+        for (var key of Object.keys(refs)) snaps[key] = await tx.get(refs[key]);
+        nextSlots.forEach(function (s) {
+          var snap = snaps[self.slotId(s)];
+          if (snap.exists && snap.data().bookingId !== ref.id) throw new Error('Это время у мастера уже занято. Выберите другое окно');
+        });
+        oldSlots.forEach(function (s) {
+          var key = self.slotId(s);
+          if (snaps[key].exists && snaps[key].data().bookingId === ref.id &&
+              !nextSlots.some(function (n) { return self.slotId(n) === key; })) tx.delete(refs[key]);
+        });
+        nextSlots.forEach(function (s) {
+          var key = self.slotId(s);
+          if (!snaps[key].exists) tx.set(refs[key], s);
+        });
         if (remove) tx.delete(ref);
         else tx.set(ref, next);
       });
