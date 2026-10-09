@@ -1,15 +1,15 @@
 /* Кабинет администратора. Цвета в одной гамме с сайтом. */
 :root {
-  --ivory: #f8f1e7;
-  --sand: #ecdcc6;
-  --blush: #e6bfb0;
-  --mocha: #6e4b3b;
-  --mocha-light: #8a6250;
-  --espresso: #2e211b;
-  --muted: #7a6659;
-  --gold: #86601f;
-  --card: #fffaf3;
-  --line: #e2d1b9;
+  --ivory: #f7f5ee;
+  --sand: #e9e5da;
+  --blush: #ddd5c7;
+  --mocha: #243e34;
+  --mocha-light: #355546;
+  --espresso: #23362e;
+  --muted: #61685e;
+  --gold: #886345;
+  --card: #fffefa;
+  --line: #dcded3;
 
   --new: #b4532f;
   --confirmed: #35645a;
@@ -47,12 +47,12 @@ a { color: inherit; text-decoration: none; }
   cursor: pointer;
   transition: background 0.2s, color 0.2s, transform 0.2s;
 }
-.btn:hover { background: var(--mocha); color: #fff6e8; }
+.btn:hover { background: var(--mocha); color: #fffefa; }
 .btn:disabled { opacity: 0.6; cursor: wait; }
 
 .btn-main {
   background: linear-gradient(135deg, var(--mocha-light), var(--mocha));
-  color: #fff6e8;
+  color: #fffefa;
   border-color: transparent;
 }
 .btn-main:hover { transform: translateY(-1px); }
@@ -65,7 +65,7 @@ a { color: inherit; text-decoration: none; }
   display: grid;
   place-items: center;
   padding: 24px;
-  background: linear-gradient(135deg, #f3e5d2 0%, #ecd0c0 55%, #e2b3a3 100%);
+  background: linear-gradient(135deg, #eeeee5 0%, #eeeee5 55%, #eeeee5 100%);
 }
 
 .panel {
@@ -115,7 +115,7 @@ input, select, textarea {
 
 input:focus, select:focus, textarea:focus {
   outline: none;
-  border-color: #c98f7e;
+  border-color: #46654e;
   box-shadow: 0 0 0 3px rgba(201, 143, 126, 0.25);
 }
 
@@ -171,7 +171,7 @@ input:focus, select:focus, textarea:focus {
   background: var(--sand);
 }
 
-.chip[aria-selected="true"] { background: var(--mocha); border-color: var(--mocha); color: #fff6e8; }
+.chip[aria-selected="true"] { background: var(--mocha); border-color: var(--mocha); color: #fffefa; }
 .chip[aria-selected="true"] em { background: rgba(255, 246, 232, 0.22); }
 .chip.attention em { background: var(--new); color: #fff; }
 
@@ -249,7 +249,7 @@ dialog h2 { font-family: var(--serif); font-weight: 500; font-size: 1.4rem; }
   transform: translateX(-50%);
   z-index: 30;
   background: var(--espresso);
-  color: #fff6e8;
+  color: #fffefa;
   padding: 12px 22px;
   border-radius: 99px;
   font-size: 0.9rem;
@@ -264,8 +264,71 @@ dialog h2 { font-family: var(--serif); font-weight: 500; font-size: 1.4rem; }
   .when .time { font-size: 1.4rem; }
   .row { grid-template-columns: 1fr; }
 }
-.schedule-panel { padding: 20px; border: 1px solid #d9c8bc; border-radius: 16px; margin-bottom: 24px; }
+.schedule-panel { padding: 20px; border: 1px solid #dcded3; border-radius: 16px; margin-bottom: 24px; }
 .time-slots { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 8px; }
-.time-slot { padding: 12px; border: 1px solid #6e4b3b; border-radius: 10px; background: #fffaf4; color: #6e4b3b; font: inherit; cursor: pointer; overflow-wrap: anywhere; }
-.time-slot.busy { background: #eee5df; border-color: #c5b8b0; }
+.time-slot { padding: 12px; border: 1px solid #243e34; border-radius: 10px; background: #fffefa; color: #243e34; font: inherit; cursor: pointer; overflow-wrap: anywhere; }
+.time-slot.busy { background: #e4e5dc; border-color: #c2cbb9; }
 .time-slot:focus-visible { outline: 3px solid #b18a59; outline-offset: 2px; }
+
+/* Общий стиль с клиентским сайтом. */
+html { color-scheme: light; }
+:focus-visible { outline: 3px solid #917252; outline-offset: 4px; }
+.btn { min-height: 44px; border-radius: 5px; letter-spacing: 0; }
+.btn-main { background: var(--mocha); }
+.btn-main:hover { background: var(--mocha-light); }
+.center { background: var(--ivory); position: relative; }
+.center::before { content: ''; position: absolute; inset: 0 0 auto; height: 7px; background: var(--mocha); }
+.panel { border: 1px solid var(--line); border-radius: 8px; padding: 36px 30px; box-shadow: 0 20px 65px #243e340d; }
+.brand { align-items: center; gap: 12px; }
+.brand b { display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid var(--mocha); border-radius: 50%; font-size: 26px; flex-shrink: 0; }
+.brand span { font-size: 9px; letter-spacing: .1em; }
+.login-intro { margin: 12px 0 4px; }
+.login-intro h1 { font-size: 29px; line-height: 1.25; margin-bottom: 10px; }
+.login-intro p { font-size: 12px; }
+.back-to-site { padding: 10px 0 0; font-size: 12px; color: var(--muted); text-align: center; }
+.back-to-site:hover { color: var(--mocha); }
+label { font-size: 12px; text-transform: none; letter-spacing: 0; color: var(--espresso); font-weight: 500; min-width: 0; }
+input, select, textarea { min-width: 0; max-width: 100%; border-radius: 4px; border-color: #bcc4b7; }
+input:focus, select:focus, textarea:focus { border-color: var(--mocha); box-shadow: 0 0 0 3px #243e3412; }
+.panel .error { color: #9a3825; font-size: 13px; }
+.top { padding: 16px max(24px, calc((100% - 940px) / 2)); background: rgba(247,245,238,.96); }
+.wrap { max-width: 980px; padding: 36px 24px 80px; }
+.dashboard-head { margin-bottom: 32px; }
+.dashboard-head p { font-size: 10px; letter-spacing: .15em; color: var(--gold); margin-bottom: 10px; }
+.dashboard-head h1 { font-family: var(--serif); font-size: clamp(28px,4vw,38px); font-weight: 500; line-height: 1.2; margin-bottom: 10px; }
+.dashboard-head > span { color: var(--muted); font-size: 13px; }
+.chip { border-radius: 5px; min-height: 44px; }
+.chip em { border-radius: 4px; }
+.schedule-panel { background: var(--card); border-radius: 6px; padding: 24px; }
+.schedule-panel h2 { font-family: var(--serif); font-size: 24px; font-weight: 500; margin-bottom: 20px; }
+#schedule-hint { color: var(--muted); font-size: 12px; margin: 16px 0; }
+.row { grid-template-columns: minmax(0,1fr) minmax(0,1fr); }
+.time-slot { border-radius: 4px; border-color: #a7b39d; font-size: 12px; min-height: 44px; }
+.time-slot:hover { border-color: var(--mocha); background: #eef0e7; }
+.card { border-radius: 6px; padding: 22px; gap: 12px; box-shadow: none; }
+.badge { border-radius: 4px; font-size: 10px; letter-spacing: .03em; }
+.comment { border-radius: 4px; font-size: 12px; }
+.who-line { font-size: 17px; }
+.sub { font-size: 12px; }
+.actions .btn { min-height: 40px; padding: 9px 13px; font-size: 12px; }
+.when .time { font-size: 26px; }
+dialog { border-radius: 8px; margin: auto; max-height: calc(100dvh - 32px); }
+dialog form { padding: 28px 24px; }
+.toast { border-radius: 6px; font-size: 12px; padding: 14px 20px; }
+@media (max-width:560px) {
+  .top { padding: 14px 18px; }
+  .wrap { padding: 28px 18px 60px; }
+  .panel { padding: 30px 24px; }
+  .panel .brand span { display: block; }
+  .schedule-panel { padding: 20px 16px; }
+  .row { grid-template-columns: minmax(0,1fr); }
+  .card { padding: 18px 16px; }
+  .when .date { font-size: 12px; }
+  .badge { padding: 5px 8px; }
+  .who { gap: 8px; }
+  .who span { max-width: 130px; font-size: 11px; }
+  .center { padding: 18px; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .btn { transition: none; }
+}

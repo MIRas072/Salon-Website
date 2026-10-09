@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#f1e2cf">
+  <meta name="theme-color" content="#243e34">
   <title>Салон красоты «11» — Астана</title>
   <meta name="description" content="Салон красоты «11» в Астане: мужской и женский залы, стрижки, окрашивание, укладки, свадебный макияж. Айтматова 36. Запись онлайн.">
 
@@ -14,7 +14,7 @@
   <meta property="og:locale" content="ru_RU">
 
   <!-- Иконка вкладки -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%236e4b3b'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' text-anchor='middle' fill='%23e3c88f'%3E11%3C/text%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23243e34'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' text-anchor='middle' fill='%23f7f5ee'%3E11%3C/text%3E%3C/svg%3E">
 
   <!-- Шрифты: Playfair Display для заголовков, Inter для текста -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,16 +43,28 @@
 </head>
 <body>
 
+  <a href="#booking" class="skip-link">Перейти к записи</a>
+
   <!-- Верхнее меню -->
   <header class="header">
-    <a href="#top" class="logo"><b>11</b><span>Салон красоты</span></a>
-    <nav class="nav">
+    <a href="#top" class="logo" aria-label="Салон красоты 11 — на главную"><b>11</b><span>Салон красоты<small>Астана · Айтматова 36</small></span></a>
+    <nav class="nav" aria-label="Основное меню">
       <a href="#services">Услуги</a>
+      <a href="#masters">Мастера</a>
       <a href="#about">О салоне</a>
-      <a href="#booking">Запись</a>
       <a href="#contact">Контакты</a>
       <a href="#booking" class="nav-cta">Записаться</a>
     </nav>
+    <details class="mobile-menu">
+      <summary>Меню</summary>
+      <nav aria-label="Меню на телефоне">
+        <a href="#services">Услуги и цены</a>
+        <a href="#masters">Наши мастера</a>
+        <a href="#about">О салоне</a>
+        <a href="#booking">Записаться</a>
+        <a href="#contact">Контакты</a>
+      </nav>
+    </details>
   </header>
 
   <main id="top">
@@ -61,24 +73,41 @@
     <section class="band hero">
       <div class="wrap hero-inner">
         <div class="hero-text">
-          <p class="eyebrow reveal">Beauty salon · Астана</p>
-          <h1 class="reveal">Салон красоты <span class="accent">«11»</span></h1>
-          <p class="hero-lead reveal">Стрижки, окрашивание, укладки и свадебные образы для женщин и мужчин. Приходите, мы подчеркнём лучшее в вас.</p>
+          <p class="eyebrow reveal">Салон «11» · Астана</p>
+          <h1 class="reveal">Ваш образ.<br><em>Ваше настроение.</em></h1>
+          <p class="hero-lead reveal">Стрижка, новый цвет или образ для особенного дня. Найдите своего мастера — мы позаботимся об остальном.</p>
           <div class="hero-buttons reveal">
-            <a href="#booking" class="btn btn-main">Записаться</a>
+            <a href="#booking" class="btn btn-main">Выбрать время <span aria-hidden="true">→</span></a>
             <a href="#services" class="btn btn-line">Услуги и цены</a>
           </div>
           <ul class="facts reveal">
-            <li><span>Адрес</span>Айтматова 36, Астана</li>
-            <li><span>Часы работы</span>10:00 – 20:00</li>
+            <li><span>Ждём вас</span>Айтматова 36, Астана</li>
+            <li><span>Каждый день</span>10:00 – 20:00</li>
           </ul>
         </div>
 
         <div class="hero-art reveal" aria-hidden="true">
-          <div class="arch a-mocha"><em>11</em></div>
-          <div class="arch a-gold"></div>
-          <div class="orb"></div>
-          <div class="ring"></div>
+          <div class="art-top"><span>BEAUTY & STYLE</span><span>ASTANA</span></div>
+          <svg class="hair-lines" viewBox="0 0 440 540" fill="none">
+            <g stroke="currentColor" stroke-width="1">
+              <path d="M420-30C90 70 440 260 175 370S100 530-70 580"/>
+              <path d="M400-30C70 70 420 260 155 370S80 530-90 580"/>
+              <path d="M380-30C50 70 400 260 135 370S60 530-110 580"/>
+              <path d="M360-30C30 70 380 260 115 370S40 530-130 580"/>
+              <path d="M340-30C10 70 360 260 95 370S20 530-150 580"/>
+              <path d="M320-30C-10 70 340 260 75 370S0 530-170 580"/>
+              <path d="M300-30C-30 70 320 260 55 370S-20 530-190 580"/>
+              <path d="M440-30C110 70 460 260 195 370S120 530-50 580"/>
+              <path d="M460-30C130 70 480 260 215 370S140 530-30 580"/>
+            </g>
+          </svg>
+          <span class="art-number">11</span>
+          <div class="art-bottom"><span>Красота<br>в деталях.</span>
+            <svg class="art-star" width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M22 2v40M2 22h40M8 8l28 28M8 36 36 8"/>
+            </svg>
+          </div>
+          <div class="art-caption">Женский и мужской зал</div>
         </div>
       </div>
     </section>
@@ -87,14 +116,15 @@
     <section id="services" class="band band-ivory">
       <div class="wrap">
         <div class="section-head reveal">
-          <p class="eyebrow">Услуги</p>
-          <h2>Услуги и цены</h2>
+          <p class="eyebrow">01 / Услуги</p>
+          <h2>Маленькие перемены.<br><em>Большое ощущение себя.</em></h2>
+          <p class="section-intro">От привычной стрижки до нового образа — выберите то, что нужно именно вам.</p>
         </div>
 
         <div class="price-grid reveal">
 
           <div class="price-card pc-women">
-            <div class="card-head"><h3>Женский зал</h3></div>
+            <div class="card-head"><span class="card-number">01</span><h3>Женский зал</h3><p>Форма, цвет и настроение</p></div>
             <ul class="prices">
               <li><span>Стрижка</span><b>от 4 000 ₸</b></li>
               <li><span>Детская стрижка</span><b>от 3 500 ₸</b></li>
@@ -109,7 +139,7 @@
 
           <div class="price-col">
             <div class="price-card pc-men">
-              <div class="card-head"><h3>Мужской зал</h3></div>
+              <div class="card-head"><span class="card-number">02</span><h3>Мужской зал</h3><p>Чёткие линии и ваш стиль</p></div>
               <ul class="prices">
                 <li><span>Стрижка</span><b>от 3 000 ₸</b></li>
                 <li><span>Детская стрижка</span><b>от 2 500 ₸</b></li>
@@ -118,7 +148,7 @@
             </div>
 
             <div class="price-card pc-makeup">
-              <div class="card-head"><h3>Макияж</h3></div>
+              <div class="card-head"><span class="card-number">03</span><h3>Особенный день</h3><p>Свадебный образ</p></div>
               <ul class="prices">
                 <li><span>Свадебный образ</span><b>12 000 ₸</b></li>
               </ul>
@@ -130,12 +160,45 @@
       </div>
     </section>
 
+    <section id="masters" class="band band-team">
+      <div class="wrap">
+        <div class="section-head reveal">
+          <p class="eyebrow">02 / Команда</p>
+          <h2>Знакомьтесь.<br><em>Ваши мастера.</em></h2>
+          <p class="section-intro">Выбирайте мастера по услуге и удобному времени. Доступные окна появятся в форме записи.</p>
+        </div>
+        <div class="master-grid reveal">
+          <article class="master-card">
+            <div class="master-mark" aria-hidden="true">Н<span>01</span></div>
+            <h3>Назигуль</h3>
+            <p class="master-role">Все услуги салона</p>
+            <p>Женский и мужской зал, окрашивание, укладки и свадебный образ.</p>
+            <a href="#booking" class="master-link" data-master="master-1">Записаться к Назигуль <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="master-card">
+            <div class="master-mark mark-sand" aria-hidden="true">А<span>02</span></div>
+            <h3>Арай</h3>
+            <p class="master-role">Стрижки, цвет и укладки</p>
+            <p>Услуги женского и мужского зала, кроме свадебного образа.</p>
+            <a href="#booking" class="master-link" data-master="master-2">Записаться к Арай <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="master-card">
+            <div class="master-mark mark-rose" aria-hidden="true">Ж<span>03</span></div>
+            <h3>Жазира</h3>
+            <p class="master-role">Мужской зал</p>
+            <p>Мужские, детские и модельные стрижки.</p>
+            <a href="#booking" class="master-link" data-master="master-3">Записаться к Жазире <span aria-hidden="true">→</span></a>
+          </article>
+        </div>
+      </div>
+    </section>
+
     <!-- О салоне -->
     <section id="about" class="band band-mocha">
       <div class="wrap">
         <div class="section-head reveal">
-          <p class="eyebrow">О салоне</p>
-          <h2>Всё для вашего образа в одном месте</h2>
+          <p class="eyebrow">03 / О салоне</p>
+          <h2>Место, где можно<br><em>быть собой.</em></h2>
         </div>
         <div class="about-grid reveal">
           <p class="about-text">
@@ -146,7 +209,7 @@
           <ul class="perks">
             <li><b>2 зала</b><span>женский и мужской</span></li>
             <li><b>От стрижки до свадьбы</b><span>полный набор услуг</span></li>
-            <li><b>Запись онлайн</b><span>в WhatsApp за минуту</span></li>
+            <li><b>Время для вас</b><span>выбор мастера и свободного окна онлайн</span></li>
           </ul>
         </div>
       </div>
@@ -156,8 +219,8 @@
     <section id="booking" class="band band-blush">
       <div class="wrap">
         <div class="section-head reveal">
-          <p class="eyebrow">Запись</p>
-          <h2>Записаться в салон</h2>
+          <p class="eyebrow">04 / Ваша запись</p>
+          <h2>Найдём время<br><em>для вашего образа.</em></h2>
         </div>
 
         <div class="booking reveal">
@@ -233,10 +296,19 @@
           </div>
 
           <div class="booking-side">
-            <h3>Или свяжитесь напрямую</h3>
+            <h3>Три простых шага</h3>
+            <ol class="booking-steps">
+              <li><span>01</span><div><b>Услуга и мастер</b><p>Выберите, что хотите сделать и к кому записаться.</p></div></li>
+              <li><span>02</span><div><b>Дата и время</b><p>Форма покажет актуальные свободные окна.</p></div></li>
+              <li><span>03</span><div><b>Подтверждение</b><p>Отправьте заявку — администратор свяжется с вами.</p></div></li>
+            </ol>
+            <div class="booking-support">
+            <p class="eyebrow">Поможем с выбором</p>
+            <h3>Предпочитаете поговорить?</h3>
             <a href="tel:+77779487708" class="contact-link"><span>Позвонить</span>8 777 948 77 08</a>
             <a href="https://wa.me/77779487708?text=%D0%97%D0%B4%D1%80%D0%B0%D0%B2%D1%81%D1%82%D0%B2%D1%83%D0%B9%D1%82%D0%B5!%20%D0%A5%D0%BE%D1%87%D1%83%20%D0%B7%D0%B0%D0%BF%D0%B8%D1%81%D0%B0%D1%82%D1%8C%D1%81%D1%8F%20%D0%B2%20%D1%81%D0%B0%D0%BB%D0%BE%D0%BD%20%C2%AB11%C2%BB." class="contact-link" target="_blank" rel="noopener"><span>Написать в WhatsApp</span>8 777 948 77 08</a>
             <a href="https://instagram.com/aaaazzirali" class="contact-link" target="_blank" rel="noopener"><span>Instagram</span>@aaaazzirali</a>
+            </div>
           </div>
         </div>
       </div>
@@ -246,8 +318,8 @@
     <section id="contact" class="band band-ivory">
       <div class="wrap">
         <div class="section-head reveal">
-          <p class="eyebrow">Контакты</p>
-          <h2>Как нас найти</h2>
+          <p class="eyebrow">05 / Контакты</p>
+          <h2>До встречи<br><em>в салоне «11».</em></h2>
         </div>
         <div class="contact-grid reveal">
           <div class="info-card">
@@ -279,6 +351,7 @@
   <footer class="footer">
     <div class="wrap footer-inner">
       <p>© 2026 Салон красоты «11», Астана</p>
+      <a href="admin.html">Кабинет администратора</a>
       <p>Сайт создал <a href="https://aaaazzirali.netlify.app" target="_blank" rel="noopener">Miras Azirali</a></p>
     </div>
   </footer>
@@ -309,12 +382,30 @@
       items.forEach(function (el) { observer.observe(el); });
     })();
 
+    document.querySelectorAll('.mobile-menu a').forEach(function (link) {
+      link.addEventListener('click', function () { document.querySelector('.mobile-menu').open = false; });
+    });
+
   </script>
 
   <!-- Форма записи: сохраняет заявку в кабинет администратора (или открывает WhatsApp) -->
   <script src="firebase-config.js"></script>
   <script src="schedule.js"></script>
   <script src="booking.js"></script>
+  <script>
+    document.querySelectorAll('[data-master]').forEach(function (link) {
+      link.addEventListener('click', function () {
+        var service = document.getElementById('f-service');
+        var master = document.getElementById('f-master');
+        if (service.value && !window.SalonSchedule.canServe(link.dataset.master, service.value)) {
+          service.value = '';
+          service.dispatchEvent(new Event('change', { bubbles: true }));
+        }
+        master.value = link.dataset.master;
+        master.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+    });
+  </script>
 
 </body>
 </html>

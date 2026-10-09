@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="robots" content="noindex, nofollow">
-  <meta name="theme-color" content="#6e4b3b">
+  <meta name="theme-color" content="#243e34">
   <title>Кабинет администратора — Салон «11»</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -28,6 +28,7 @@
   <section id="login" class="center" hidden>
     <form id="login-form" class="panel" novalidate>
       <div class="brand"><b>11</b><span>Кабинет администратора</span></div>
+      <div class="login-intro"><h1>С возвращением.</h1><p>Войдите, чтобы управлять записями салона.</p></div>
       <label>Почта
         <input type="email" id="login-email" autocomplete="username" required>
       </label>
@@ -36,6 +37,7 @@
       </label>
       <p class="error" id="login-error" role="alert" hidden></p>
       <button type="submit" class="btn btn-main" id="login-submit">Войти</button>
+      <a class="back-to-site" href="index.html">На сайт салона</a>
     </form>
   </section>
 
@@ -50,6 +52,7 @@
     </header>
 
     <main class="wrap">
+      <div class="dashboard-head"><p>САЛОН «11» · АСТАНА</p><h1>Записи и расписание</h1><span>Заявки, свободные окна и рабочий день — в одном месте.</span></div>
       <div class="bar">
         <div class="chips" id="chips" role="tablist" aria-label="Фильтр записей"></div>
         <div class="tools">

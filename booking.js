@@ -38,6 +38,7 @@
     var chosen = timeEl.value;
     timeEl.replaceChildren(new Option('Выберите время', ''));
     slotButtons.replaceChildren();
+    slotButtons.hidden = !masterEl.value || !dateEl.value;
     timeEl.disabled = !availabilityReady || sending;
     schedule.times.forEach(function (t) {
       var past = dateEl.value && schedule.isPast(dateEl.value, t);
