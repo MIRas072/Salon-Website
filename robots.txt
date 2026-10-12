@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /admin.html
+Disallow: /next/
+Disallow: /api/
+Sitemap: https://mellow-clafoutis-df9f5b.netlify.app/sitemap.xml

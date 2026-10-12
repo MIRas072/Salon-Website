@@ -1,0 +1,31 @@
+name: Salon system checks
+on:
+  push:
+    branches: [salon/full-system]
+  pull_request:
+permissions:
+  contents: read
+jobs:
+  system:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: npm
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: "21"
+      - run: npm ci
+      - run: npm test
+      - run: npx playwright install --with-deps chromium
+      - run: npm run test:ui
+      - run: npm run build
+      - name: Firestore transactions
+        run: |
+          mkdir -p /tmp/salon-v2-emulator
+          node -e 'require("fs").writeFileSync("/tmp/salon-v2-emulator/firebase.json",JSON.stringify({firestore:{rules:process.cwd()+"/firestore-v2.rules"},emulators:{firestore:{host:"127.0.0.1",port:8087},ui:{enabled:false},singleProjectMode:false}}))'
+          CI=true npm exec --yes --package=firebase-tools@15.33.0 -- firebase emulators:exec --config /tmp/salon-v2-emulator/firebase.json --only firestore --project demo-salon-v2 "SALON_TEST_FIRESTORE=1 node --test tests/backend.test.cjs tests/storage.test.cjs"

@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta
+      name="description"
+      content="Салон красоты: услуги, мастера и онлайн-запись на свободное время."
+    />
+    <title>Онлайн-запись в салон</title>
+    <link rel="stylesheet" href="ui.css" />
+    <script src="client.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <strong id="brand">Салон красоты «11»</strong>
+      <nav class="links">
+        <a href="#services">Услуги</a><a href="#booking">Записаться</a
+        ><a href="admin.html">Кабинет</a>
+      </nav>
+    </header>
+    <main>
+      <section class="hero">
+        <div>
+          <p class="eyebrow">Время для себя</p>
+          <h1>Ваш образ.<br />Ваше настроение.</h1>
+          <p id="address">Астана, Айтматова 36</p>
+          <p>
+            Выберите услугу, мастера и удобное время. Администратор подтвердит
+            вашу заявку.
+          </p>
+          <a class="button" href="#booking">Выбрать время →</a>
+        </div>
+        <div class="hero-art" aria-hidden="true">11</div>
+      </section>
+      <p id="load-error" class="error" role="alert" hidden></p>
+      <section id="services">
+        <h2>Услуги и мастера</h2>
+        <p>Цены указаны от. Окончательная стоимость согласуется с мастером.</p>
+        <div id="catalog" class="grid"></div>
+      </section>
+      <section id="booking" class="panel">
+        <p class="eyebrow">Онлайн-запись</p>
+        <h2>Найдём ваше время</h2>
+        <p id="launch-warning" class="notice" hidden></p>
+        <form id="booking-form">
+          <div class="grid">
+            <div>
+              <label for="service">Услуга</label
+              ><select id="service" required>
+                <option value="">Выберите услугу</option>
+              </select>
+            </div>
+            <div>
+              <label for="master">Мастер</label
+              ><select id="master" required>
+                <option value="">Выберите мастера</option>
+              </select>
+            </div>
+            <div>
+              <label for="date">Дата</label
+              ><input type="date" id="date" required />
+            </div>
+          </div>
+          <p id="availability" aria-live="polite">
+            Выберите услугу, мастера и дату.
+          </p>
+          <div id="slots" class="slots" aria-label="Свободное время"></div>
+          <input type="hidden" id="time" />
+          <div class="grid">
+            <div>
+              <label for="name">Ваше имя</label
+              ><input id="name" autocomplete="name" maxlength="80" required />
+            </div>
+            <div>
+              <label for="phone">Телефон</label
+              ><input
+                id="phone"
+                type="tel"
+                autocomplete="tel"
+                placeholder="+7 777 123 45 67"
+                maxlength="20"
+                required
+              />
+            </div>
+          </div>
+          <label for="client-email">Почта для напоминания (необязательно)</label
+          ><input
+            id="client-email"
+            type="email"
+            autocomplete="email"
+            maxlength="254"
+          />
+          <p class="muted">
+            Письма приходят только если салон подключил службу уведомлений.
+          </p>
+          <label for="comment">Комментарий</label
+          ><textarea id="comment" maxlength="300"></textarea>
+          <label
+            ><input type="checkbox" id="consent" required />Согласен на
+            обработку данных для записи.
+            <a href="privacy.html" target="_blank" rel="noopener"
+              >Политика обработки данных</a
+            ></label
+          >
+          <div id="challenge"></div>
+          <p id="form-error" class="error" role="alert" hidden></p>
+          <button id="submit" disabled>Отправить заявку</button>
+          <p class="muted">
+            Заявка требует подтверждения. Срок ожидания указан после отправки.
+          </p>
+        </form>
+        <div id="success" class="success" hidden>
+          <h3>Заявка принята</h3>
+          <p id="success-text"></p>
+          <a id="cancel-link" href="#"
+            >Сохраните ссылку для самостоятельной отмены</a
+          >
+          <p>Не передавайте эту ссылку другим людям.</p>
+        </div>
+      </section>
+      <section>
+        <h2>Свяжитесь с нами</h2>
+        <p id="contact-address"></p>
+        <a id="call" class="button secondary" href="tel:+77779487708"
+          >Позвонить</a
+        >
+        <a
+          id="whatsapp"
+          class="button secondary"
+          href="https://wa.me/77779487708"
+          target="_blank"
+          rel="noopener"
+          >WhatsApp</a
+        >
+      </section>
+    </main>
+    <footer><a href="privacy.html">Обработка персональных данных</a></footer>
+  </body>
+</html>

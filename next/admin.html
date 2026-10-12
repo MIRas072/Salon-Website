@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="robots" content="noindex,nofollow" />
+    <title>Управление салоном</title>
+    <link rel="stylesheet" href="ui.css" />
+    <script src="../firebase-config.js"></script>
+    <script src="admin.js" defer></script>
+  </head>
+  <body>
+    <header>
+      <strong>Кабинет салона</strong>
+      <nav class="links">
+        <a href="index.html">Сайт клиента</a
+        ><button id="logout" class="secondary" hidden>Выйти</button>
+      </nav>
+    </header>
+    <main class="admin-main">
+      <section id="login" class="panel">
+        <p class="eyebrow">Управление салоном</p>
+        <h1>С возвращением.</h1>
+        <p>Войдите в свой аккаунт администратора.</p>
+        <form id="login-form">
+          <label for="email">Почта</label
+          ><input
+            id="email"
+            type="email"
+            autocomplete="username"
+            required
+          /><label for="password">Пароль</label
+          ><input
+            id="password"
+            type="password"
+            autocomplete="current-password"
+            required
+          />
+          <p></p>
+          <button>Войти</button>
+          <button type="button" id="reset" class="secondary">
+            Забыли пароль?
+          </button>
+        </form>
+        <button id="dev-login" class="secondary" hidden>
+          Войти в локальную тестовую систему
+        </button>
+      </section>
+      <p id="message" role="status" hidden></p>
+      <section id="app" hidden>
+        <p class="eyebrow" id="identity"></p>
+        <h1>Всё под контролем.</h1>
+        <p id="new-notice" class="notice" hidden></p>
+        <nav id="tabs" class="tabs">
+          <button data-tab="bookings" class="active">Записи</button
+          ><button data-tab="shifts">Расписание</button
+          ><button data-tab="customers">Клиенты</button
+          ><button data-tab="settings">Настройки</button
+          ><button data-tab="members">Доступы</button
+          ><button data-tab="audit">Журнал</button
+          ><button data-tab="backup">Экспорт</button>
+        </nav>
+        <section id="tab-bookings">
+          <div class="panel">
+            <div class="row spread">
+              <h2>Записи</h2>
+              <button id="add">Добавить запись</button>
+            </div>
+            <div class="date-fields">
+              <div>
+                <label for="from">С даты</label><input id="from" type="date" />
+              </div>
+              <div>
+                <label for="to">По дату</label><input id="to" type="date" />
+              </div>
+            </div>
+            <div class="grid">
+              <div>
+                <label for="filter-master">Мастер</label
+                ><select id="filter-master">
+                  <option value="">Все</option>
+                </select>
+              </div>
+              <div>
+                <label for="filter-status">Статус</label
+                ><select id="filter-status">
+                  <option value="">Все</option>
+                  <option value="new">Новые</option>
+                  <option value="confirmed">Подтверждённые</option>
+                  <option value="done">Выполненные</option>
+                  <option value="cancelled">Отменённые</option>
+                  <option value="expired">Истёкшие</option>
+                  <option value="no-show">Не пришёл</option>
+                </select>
+              </div>
+              <div>
+                <label for="search">Имя / телефон</label
+                ><input id="search" type="search" />
+              </div>
+            </div>
+            <p></p>
+            <button id="refresh" class="secondary">Обновить</button>
+            <button id="all-new" class="secondary">
+              Новые заявки за все даты
+            </button>
+            <p class="muted">
+              Загружается выбранный период. Поиск работает по загруженным
+              записям.
+            </p>
+            <div id="stats" class="grid"></div>
+          </div>
+          <div id="bookings-list" class="grid"></div>
+          <button id="more" class="secondary" hidden>Загрузить ещё</button>
+        </section>
+        <section id="tab-shifts" class="panel" hidden>
+          <h2>Смены и перерывы</h2>
+          <p>
+            Разделите смену на интервалы, чтобы добавить обед. Пустой список
+            означает выходной. Изменение дня не затрагивает недельный график.
+          </p>
+          <form id="shift-form">
+            <label for="shift-master">Мастер</label
+            ><select id="shift-master" required></select
+            ><label for="shift-date">Дата</label
+            ><input id="shift-date" type="date" required />
+            <p></p>
+            <button type="button" id="shift-load" class="secondary">
+              Показать смену</button
+            ><label for="shift-windows"
+              >Интервалы, каждый с новой строки: 10:00-13:00</label
+            ><textarea
+              id="shift-windows"
+              placeholder="10:00-13:00&#10;14:00-20:00"
+            ></textarea
+            ><button>Сохранить день</button>
+          </form>
+        </section>
+        <section id="tab-customers" hidden>
+          <div class="panel">
+            <h2>Клиенты</h2>
+            <p>
+              Карточки создаются по номеру телефона. История и заметки доступны
+              только сотрудникам.
+            </p>
+          </div>
+          <div id="customers-list" class="grid"></div>
+          <button id="customers-more" class="secondary" hidden>
+            Загрузить ещё
+          </button>
+        </section>
+        <section id="tab-settings" class="panel" hidden>
+          <h2>Настройки салона</h2>
+          <form id="settings-form">
+            <div class="grid">
+              <div>
+                <label for="s-name">Название</label
+                ><input id="s-name" required maxlength="100" />
+              </div>
+              <div>
+                <label for="s-phone">Телефон</label
+                ><input id="s-phone" required />
+              </div>
+            </div>
+            <label for="s-address">Адрес</label
+            ><input id="s-address" required maxlength="200" /><label
+              for="s-timezone"
+              >Часовой пояс</label
+            ><input id="s-timezone" required />
+            <div class="grid">
+              <div>
+                <label for="s-pending">Ожидание подтверждения, часов</label
+                ><input
+                  id="s-pending"
+                  type="number"
+                  min="1"
+                  max="72"
+                  required
+                />
+              </div>
+              <div>
+                <label for="s-horizon">Запись вперёд, дней</label
+                ><input
+                  id="s-horizon"
+                  type="number"
+                  min="1"
+                  max="365"
+                  required
+                />
+              </div>
+              <div>
+                <label for="s-lead">Минимум до визита, минут</label
+                ><input id="s-lead" type="number" min="0" max="1440" required />
+              </div>
+            </div>
+            <h3>Услуги</h3>
+            <div id="services-editor"></div>
+            <button type="button" id="service-add" class="secondary">
+              Добавить услугу</button
+            ><label
+              ><input type="checkbox" id="s-durations" />Длительности
+              согласованы с мастерами</label
+            >
+            <h3>Мастера и услуги</h3>
+            <div id="masters-editor"></div>
+            <button type="button" id="master-add" class="secondary">
+              Добавить мастера
+            </button>
+            <h3>Недельный график</h3>
+            <p>
+              Для каждого мастера: дни 0–6 (0 — воскресенье), интервалы через
+              запятую. Пустое поле — выходной.
+            </p>
+            <div id="weekly-editor"></div>
+            <h3>Персональные данные</h3>
+            <label for="s-privacy-version">Версия политики</label
+            ><input id="s-privacy-version" required maxlength="50" /><label
+              for="s-privacy"
+              >Текст политики</label
+            ><textarea id="s-privacy" maxlength="30000" required></textarea
+            ><label
+              ><input type="checkbox" id="s-approved" />Владелец утвердил
+              политику и обработку данных</label
+            >
+            <p class="notice">
+              До утверждения политики публичная запись закрыта. Проверьте сроки
+              хранения, права клиентов и применимые требования к размещению
+              данных.
+            </p>
+            <button id="settings-save">Сохранить настройки</button>
+          </form>
+        </section>
+        <section id="tab-members" class="panel" hidden>
+          <h2>Доступ сотрудников</h2>
+          <p>
+            Сначала создайте пользователя в Firebase Authentication. Скопируйте
+            его UID сюда. Пароль хранит Firebase; передавать его разработчику не
+            нужно.
+          </p>
+          <form id="member-form">
+            <label for="member-uid">UID пользователя</label
+            ><input id="member-uid" required maxlength="128" /><label
+              for="member-role"
+              >Роль</label
+            ><select id="member-role">
+              <option value="receptionist">
+                Администратор: записи и клиенты
+              </option>
+              <option value="manager">
+                Управляющий: записи, настройки, журнал
+              </option>
+              <option value="master">
+                Мастер: свои записи и завершение визита
+              </option></select
+            ><label for="member-master">Мастер (для роли мастера)</label
+            ><select id="member-master"></select
+            ><label
+              ><input id="member-active" type="checkbox" checked />Доступ
+              включён</label
+            ><button>Сохранить доступ</button>
+          </form>
+          <div id="members-list"></div>
+        </section>
+        <section id="tab-audit" class="panel" hidden>
+          <h2>Журнал действий</h2>
+          <p>
+            Создание и изменение записей, оплаты, график, настройки и доступы.
+          </p>
+          <div id="audit-list" class="pre"></div>
+        </section>
+        <section id="tab-backup" class="panel" hidden>
+          <h2>Экспорт и резервная копия</h2>
+          <p>
+            Экспорт содержит персональные данные. Храните его в закрытом месте.
+            Для восстановления используйте серверный инструмент по инструкции;
+            загрузка файла в браузер данные не восстанавливает.
+          </p>
+          <button id="export">Скачать резервную копию JSON</button>
+          <p class="muted">
+            Экспорт предназначен для небольшой базы. Для больших архивов —
+            серверный экспорт Firebase.
+          </p>
+        </section>
+      </section>
+    </main>
+    <dialog id="editor">
+      <form id="editor-form">
+        <h2 id="editor-title">Запись</h2>
+        <div class="grid">
+          <div>
+            <label for="e-name">Имя</label
+            ><input id="e-name" required maxlength="80" />
+          </div>
+          <div>
+            <label for="e-phone">Телефон</label
+            ><input id="e-phone" required maxlength="20" />
+          </div>
+        </div>
+        <label for="e-service">Услуга</label
+        ><select id="e-service" required></select
+        ><label for="e-master">Мастер</label
+        ><select id="e-master" required></select>
+        <div class="date-fields">
+          <div>
+            <label for="e-date">Дата</label
+            ><input id="e-date" type="date" required />
+          </div>
+          <div>
+            <label for="e-time">Время</label
+            ><input id="e-time" type="time" step="1800" required />
+          </div>
+        </div>
+        <label for="e-status">Статус</label
+        ><select id="e-status">
+          <option value="new">Новая</option>
+          <option value="confirmed">Подтверждена</option>
+          <option value="done">Выполнена</option>
+          <option value="cancelled">Отменена</option>
+          <option value="no-show">Не пришёл</option></select
+        ><label for="e-comment">Комментарий</label
+        ><textarea id="e-comment" maxlength="300"></textarea>
+        <p id="editor-error" class="error" role="alert" hidden></p>
+        <div class="row">
+          <button id="editor-save">Сохранить</button
+          ><button id="editor-close" type="button" class="secondary">
+            Закрыть
+          </button>
+        </div>
+      </form>
+    </dialog>
+    <dialog id="customer-dialog">
+      <h2 id="customer-title"></h2>
+      <p id="customer-phone"></p>
+      <label for="customer-notes">Заметки</label
+      ><textarea id="customer-notes" maxlength="2000"></textarea>
+      <div class="row">
+        <button id="customer-save">Сохранить заметки</button
+        ><button id="customer-close" class="secondary">Закрыть</button>
+        <button id="customer-remove" class="danger" hidden>
+          Удалить личные данные
+        </button>
+      </div>
+      <div id="customer-history"></div>
+    </dialog>
+    <dialog id="payment-dialog">
+      <form id="payment-form">
+        <h2>Оплата / возврат</h2>
+        <p>
+          Укажите положительную сумму оплаты или отрицательную сумму возврата.
+          Это внутренний учёт, не фискальный чек.
+        </p>
+        <label for="payment-amount">Сумма, ₸</label
+        ><input id="payment-amount" type="number" required step="1" /><label
+          for="payment-method"
+          >Способ</label
+        ><select id="payment-method">
+          <option value="cash">Наличные</option>
+          <option value="card">Карта</option>
+          <option value="transfer">Перевод</option>
+        </select>
+        <p id="payment-error" class="error" hidden></p>
+        <p></p>
+        <button>Записать</button>
+        <button id="payment-close" type="button" class="secondary">
+          Закрыть
+        </button>
+      </form>
+    </dialog>
+  </body>
+</html>
