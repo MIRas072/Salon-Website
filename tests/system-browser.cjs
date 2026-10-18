@@ -177,9 +177,56 @@ let server, tmp;
     await page.locator("#export").click();
     const download = await downloadPromise;
     assert.match(download.suggestedFilename(), /^salon-backup/);
+    await page.locator("[data-tab=customers]").click();
+    await page
+      .getByRole("button", { name: "История и заметки" })
+      .first()
+      .click();
+    await page.locator("#customer-dialog").waitFor({ state: "visible" });
+    await page.evaluate(() => document.getElementById("logout").click());
+    await page.locator("#login").waitFor({ state: "visible" });
+    assert.equal(
+      await page.locator("#customer-dialog").isVisible(),
+      false,
+      "logout must close personal-data dialogs",
+    );
+    assert.equal(await page.locator("#customer-phone").textContent(), "");
+    await page.locator("#dev-login").click();
+    await page.locator("#app").waitFor({ state: "visible" });
+    assert.equal(
+      await page.locator("#tab-bookings").isVisible(),
+      true,
+      "new session must start at bookings",
+    );
+    let releaseResponse, received;
+    const release = new Promise((resolve) => {
+        releaseResponse = resolve;
+      }),
+      captured = new Promise((resolve) => {
+        received = resolve;
+      });
+    await page.route("**/api/v2/admin/customers", async (route) => {
+      const response = await route.fetch();
+      received();
+      await release;
+      await route.fulfill({ response });
+    });
+    await page.locator("[data-tab=customers]").click();
+    await captured;
+    await page.locator("#logout").click();
+    releaseResponse();
+    await page.waitForFunction(
+      () =>
+        document.getElementById("message").textContent === "Сессия завершена",
+    );
+    assert.equal(
+      await page.locator("#customers-list").textContent(),
+      "",
+      "late responses must not restore client data after logout",
+    );
     assert.deepEqual(errors, []);
     console.log(
-      "PASS: local full stack UI: policy activation, hour booking, confirmation, move, payment, customer notes, shift conflict, secure client cancellation, export, 390/320px layout",
+      "PASS: full stack UI, 390/320px layout, logout clears private dialogs, resets tabs and rejects late client-data responses",
     );
   } finally {
     await browser.close();

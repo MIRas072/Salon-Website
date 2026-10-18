@@ -22,6 +22,7 @@ let auth,
   tab = "bookings",
   listSequence = 0;
 let pendingView = false;
+let sessionRevision = 0;
 const statusName = {
   new: "Новая",
   confirmed: "Подтверждена",
@@ -36,7 +37,9 @@ function message(text, error = false) {
   $("message").hidden = false;
 }
 async function request(path, method = "GET", body) {
+  const revision = sessionRevision;
   const token = localToken || (await auth?.currentUser?.getIdToken());
+  if (revision !== sessionRevision) throw new Error("Сессия завершена");
   const r = await fetch("/api/v2/admin/" + path, {
     method,
     headers: {
@@ -46,6 +49,7 @@ async function request(path, method = "GET", body) {
     body: body ? JSON.stringify(body) : undefined,
   });
   const data = await r.json();
+  if (revision !== sessionRevision) throw new Error("Сессия завершена");
   if (!r.ok) throw new Error(data.error || "Ошибка сервера");
   return data;
 }
@@ -100,6 +104,20 @@ async function enter() {
     const data = await request("settings");
     settings = data.settings;
     role = data.role;
+    tab = "bookings";
+    pendingView = false;
+    for (const b of document.querySelectorAll("[data-tab]"))
+      b.classList.toggle("active", b.dataset.tab === tab);
+    for (const id of [
+      "bookings",
+      "shifts",
+      "customers",
+      "settings",
+      "members",
+      "audit",
+      "backup",
+    ])
+      $("tab-" + id).hidden = id !== tab;
     $("identity").textContent =
       settings.name +
       " · " +
@@ -794,6 +812,7 @@ async function firebase() {
   auth = window.firebase.auth();
   auth.onAuthStateChanged((user) => {
     if (user) enter();
+    else if (!$("app").hidden) clearSession();
   });
 }
 $("login-form").onsubmit = async (e) => {
@@ -825,10 +844,20 @@ $("reset").onclick = async () => {
     message("Не удалось отправить инструкцию. Повторите позже.", true);
   }
 };
-$("logout").onclick = async () => {
-  if (auth) await auth.signOut();
+function clearSession() {
+  sessionRevision++;
   localToken = null;
   items = [];
+  settings = null;
+  role = null;
+  editing = null;
+  currentCustomer = null;
+  paymentBooking = null;
+  paymentRequest = null;
+  cursor = null;
+  customerCursor = null;
+  tab = "bookings";
+  pendingView = false;
   seen = new Set();
   loaded = false;
   listSequence++;
@@ -837,6 +866,47 @@ $("logout").onclick = async () => {
   $("logout").hidden = true;
   $("bookings-list").replaceChildren();
   $("customers-list").replaceChildren();
+  for (const dialog of document.querySelectorAll("dialog"))
+    if (dialog.open) dialog.close();
+  for (const id of [
+    "editor-form",
+    "settings-form",
+    "payment-form",
+    "member-form",
+    "shift-form",
+  ])
+    $(id).reset();
+  for (const id of [
+    "customer-title",
+    "customer-phone",
+    "customer-history",
+    "members-list",
+    "audit-list",
+    "stats",
+    "identity",
+    "new-notice",
+    "message",
+    "services-editor",
+    "masters-editor",
+    "weekly-editor",
+  ])
+    $(id).replaceChildren();
+  $("customer-notes").value = "";
+  $("password").value = "";
+  $("message").hidden = true;
+  $("new-notice").hidden = true;
+}
+$("logout").onclick = async () => {
+  clearSession();
+  if (auth)
+    try {
+      await auth.signOut();
+    } catch {
+      message(
+        "Не удалось завершить облачную сессию. Повторите выход или закройте браузер.",
+        true,
+      );
+    }
 };
 if (["localhost", "127.0.0.1"].includes(location.hostname)) {
   fetch("/api/v2/dev-session")

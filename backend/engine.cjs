@@ -134,13 +134,21 @@ function validateSettings(s) {
       x.price > 10000000
     )
       fail(400, "Длительность: 30–480 минут, цена: целое число");
+  if (!s.weekly || typeof s.weekly !== "object" || Array.isArray(s.weekly))
+    fail(400, "Укажите недельный график мастеров");
   for (const m of s.masters) {
     if (
       !Array.isArray(m.services) ||
       m.services.some((id) => !s.services.some((x) => x.id === id))
     )
       fail(400, "Неизвестная услуга мастера");
-    for (let d = 0; d < 7; d++) validateWindows(s.weekly?.[m.id]?.[d] ?? []);
+    if (
+      !s.weekly[m.id] ||
+      typeof s.weekly[m.id] !== "object" ||
+      Array.isArray(s.weekly[m.id])
+    )
+      fail(400, "Укажите недельный график каждого мастера");
+    for (let d = 0; d < 7; d++) validateWindows(s.weekly[m.id][d] ?? []);
   }
   if (
     typeof s.privacyText !== "string" ||
@@ -572,6 +580,8 @@ class Engine {
         fail(400, "Нельзя вернуть активную запись в прошлое");
       if (data.status === "new" && old.status === "new")
         data.expiresAt = old.expiresAt;
+      else if (data.status === "new")
+        data.expiresAt = this.now() + s.pendingHours * 3600000;
       const apply = await this.reserveSlots(tx, s, data, old, id);
       const customerId = hash(data.phone),
         customer = await tx.get(C.customers + "/" + customerId);
@@ -675,6 +685,26 @@ class Engine {
       const old = await this.settings(tx);
       if (next.version !== old.version)
         fail(409, "Настройки уже изменены. Обновите страницу");
+      if (next.timezone !== old.timezone) {
+        const confirmed = await tx.query(
+          C.bookings,
+          [["status", "==", "confirmed"]],
+          1,
+        );
+        const pending = await tx.query(
+          C.bookings,
+          [
+            ["status", "==", "new"],
+            ["expiresAt", ">=", this.now()],
+          ],
+          1,
+        );
+        if (confirmed.length || pending.length)
+          fail(
+            409,
+            "Нельзя менять часовой пояс при активных записях. Сначала завершите или отмените их",
+          );
+      }
       next.version = old.version + 1;
       tx.set(C.settings + "/settings", next);
       this.audit(tx, user, "settings", "settings", { version: next.version });
@@ -690,14 +720,22 @@ class Engine {
       const s = await this.settings(tx);
       if (!s.masters.some((m) => m.id === masterId))
         fail(400, "Мастер не найден");
-      const records = await tx.query(
-        C.bookings,
-        [
-          ["date", "==", date],
-          ["masterId", "==", masterId],
-        ],
-        100,
-      );
+      const records = [];
+      let after = "";
+      for (;;) {
+        const page = await tx.query(
+          C.bookings,
+          [
+            ["date", "==", date],
+            ["masterId", "==", masterId],
+          ],
+          100,
+          after,
+        );
+        records.push(...page);
+        if (page.length < 100) break;
+        after = page.at(-1).id;
+      }
       for (const b of records)
         if (
           active(b, this.now()) &&

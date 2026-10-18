@@ -38,6 +38,70 @@ const booking = (overrides = {}) => ({
   consent: true,
   ...overrides,
 });
+test("regression: restoring a cancelled request renews its hold after expiry", async () => {
+  const { e, store, advance } = await setup();
+  const first = await e.create(booking());
+  await e.cancel(first.id, first.cancelToken);
+  advance(5 * 3600000);
+  const restored = await e.update(
+    first.id,
+    { status: "new", version: 2 },
+    owner,
+  );
+  assert(restored.expiresAt > e.now());
+  assert.equal(
+    (await e.availability("master-1", "2026-10-13", "service-3")).slots.find(
+      (s) => s.time === "16:00",
+    ).available,
+    false,
+  );
+  store.close();
+});
+test("regression: invalid weekly settings cannot break public availability", async () => {
+  const { e, store } = await setup();
+  const settings = (await e.adminSettings(owner)).settings;
+  await assert.rejects(e.saveSettings(owner, { ...settings, weekly: null }), {
+    status: 400,
+  });
+  assert(
+    (await e.availability("master-1", "2026-10-13", "service-3")).slots.length >
+      0,
+  );
+  store.close();
+});
+test("regression: changing timezone with active bookings is rejected", async () => {
+  const { e, store } = await setup();
+  await e.create(booking());
+  const settings = (await e.adminSettings(owner)).settings;
+  await assert.rejects(
+    e.saveSettings(owner, { ...settings, timezone: "UTC" }),
+    { status: 409 },
+  );
+  store.close();
+});
+test("regression: shift validation checks beyond 100 historical bookings", async () => {
+  const { e, store } = await setup();
+  await store.transaction(async (tx) => {
+    for (let i = 0; i < 100; i++)
+      tx.set(C.bookings + "/archived-" + String(i).padStart(3, "0"), {
+        status: "cancelled",
+        masterId: "master-1",
+        date: "2026-10-13",
+      });
+    tx.set(C.bookings + "/zz-active", {
+      status: "confirmed",
+      masterId: "master-1",
+      date: "2026-10-13",
+      time: "16:00",
+      durationMinutes: 60,
+    });
+  });
+  await assert.rejects(
+    e.shift(owner, { masterId: "master-1", date: "2026-10-13", windows: [] }),
+    { status: 409 },
+  );
+  store.close();
+});
 test("concurrent hour and second-half bookings: exactly one wins; no partial rows", async () => {
   const { e, store } = await setup();
   const results = await Promise.allSettled([
