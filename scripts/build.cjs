@@ -9,6 +9,8 @@ for (const name of [
   "index.html",
   "style.css",
   "luxury.css",
+  "presentation.css",
+  "presentation.js",
   "booking.js",
   "admin.html",
   "admin.css",

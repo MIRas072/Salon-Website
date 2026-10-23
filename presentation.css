@@ -1,0 +1,10 @@
+/* Visual bridge for the working Firebase form and the presentation layout. */
+[hidden] { display: none !important; }
+.luxury-site #f-time { margin: 14px 0; }
+.luxury-site #time-slots .time-slot { padding: 15px 10px; background: transparent; color: #33251f; border: 1px solid #c8bdac; font: 12px/1.5 Georgia,serif; cursor: pointer; }
+.luxury-site #time-slots .time-slot:disabled { color: #847a6c; cursor: not-allowed; opacity: .65; }
+.luxury-site #time-slots .time-slot[aria-pressed="true"] { background: #33251f; color: #fff; border-color: #33251f; }
+.luxury-site #time-slots .time-slot:focus-visible { outline: 2px solid #957451; outline-offset: 3px; }
+.luxury-site #booking-success { padding: 24px; background: #ece6db; border: 1px solid #c8bdac; }
+.luxury-site #form-error { color: #a53b28; }
+@media(prefers-reduced-motion:reduce) { html { scroll-behavior: auto; } }
