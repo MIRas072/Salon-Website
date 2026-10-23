@@ -26,6 +26,19 @@ function option(value, text) {
   n.textContent = text;
   return n;
 }
+function arrowIcon() {
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("viewBox", "0 0 16 16");
+  svg.setAttribute("aria-hidden", "true");
+  svg.classList.add("arrow-icon");
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", "M3 13 13 3M3 3h10v10");
+  path.setAttribute("stroke", "currentColor");
+  path.setAttribute("stroke-width", "1.2");
+  path.setAttribute("fill", "none");
+  svg.append(path);
+  return svg;
+}
 function today() {
   const p = Object.fromEntries(
     new Intl.DateTimeFormat("en-CA", {
@@ -40,29 +53,78 @@ function today() {
   return `${p.year}-${p.month}-${p.day}`;
 }
 function renderCatalog() {
-  for (const s of catalog.services) {
+  for (const [index, s] of catalog.services.entries()) {
     const card = document.createElement("article");
     card.className = "card";
     const title = document.createElement("h3");
     title.textContent = s.name;
     const detail = document.createElement("p");
+    detail.className = "service-price";
     detail.textContent = `от ${s.price.toLocaleString("ru-RU")} ₸ · ${s.duration} мин`;
     const masters = document.createElement("p");
+    masters.className = "service-masters";
     masters.textContent = catalog.masters
       .filter((m) => m.services.includes(s.id))
       .map((m) => m.name)
       .join(", ");
     const b = document.createElement("button");
-    b.textContent = "Выбрать";
+    b.append(arrowIcon());
+    b.setAttribute("aria-label", "Выбрать: " + s.name);
     b.className = "secondary";
     b.onclick = () => {
       $("service").value = s.id;
       fillMasters();
       $("booking").scrollIntoView({ behavior: "smooth" });
     };
-    card.append(title, detail, masters, b);
+    const number = document.createElement("span");
+    number.className = "service-number";
+    number.textContent = String(index + 1).padStart(2, "0");
+    card.append(number, title, detail, masters, b);
     $("catalog").append(card);
     $("service").append(option(s.id, `${s.name} · ${s.duration} мин`));
+  }
+  const team = $("team");
+  if (team) {
+    team.replaceChildren();
+    for (const m of catalog.masters) {
+      const card = document.createElement("article");
+      card.className = "team-card";
+      const mark = document.createElement("div");
+      mark.className = "team-monogram";
+      mark.textContent = m.name.charAt(0);
+      mark.setAttribute("aria-hidden", "true");
+      const name = document.createElement("h3");
+      name.textContent = m.name;
+      const description = document.createElement("p");
+      description.textContent =
+        m.services.length === catalog.services.length
+          ? "Все направления салона"
+          : catalog.services
+              .filter((s) => m.services.includes(s.id))
+              .slice(0, 3)
+              .map((s) => s.name)
+              .join(" · ") + (m.services.length > 3 ? " и другие услуги" : "");
+      const choose = document.createElement("button");
+      choose.type = "button";
+      choose.textContent = "Выбрать мастера";
+      choose.append(arrowIcon());
+      choose.onclick = () => {
+        if ($("service").value && !m.services.includes($("service").value))
+          $("service").value = "";
+        if (!$("service").value) {
+          $("master").replaceChildren(option("", "Выберите мастера"));
+          catalog.masters.forEach((master) =>
+            $("master").append(option(master.id, master.name)),
+          );
+        }
+        $("master").value = m.id;
+        chosen = "";
+        refresh();
+        $("booking").scrollIntoView({ behavior: "smooth" });
+      };
+      card.append(mark, name, description, choose);
+      team.append(card);
+    }
   }
 }
 function fillMasters() {
@@ -191,6 +253,7 @@ api("catalog")
     $("brand").textContent = s.name;
     $("address").textContent = $("contact-address").textContent = s.address;
     $("call").href = "tel:" + s.phone;
+    $("call").textContent = s.phone;
     $("whatsapp").href = "https://wa.me/" + s.phone.replace(/\D/g, "");
     $("date").min = today();
     const max = new Date(today() + "T12:00:00Z");

@@ -8,6 +8,7 @@ fs.mkdirSync(out, { recursive: true });
 for (const name of [
   "index.html",
   "style.css",
+  "luxury.css",
   "booking.js",
   "admin.html",
   "admin.css",
@@ -19,7 +20,9 @@ for (const name of [
 ])
   fs.copyFileSync(path.join(root, name), path.join(out, name));
 fs.cpSync(path.join(root, "next"), path.join(out, "next"), { recursive: true });
-fs.cpSync(path.join(root,"assets"),path.join(out,"assets"),{recursive:true});
+fs.cpSync(path.join(root, "assets"), path.join(out, "assets"), {
+  recursive: true,
+});
 console.log(
   "Built current site and isolated /next preview; server and local data excluded.",
 );

@@ -71,6 +71,7 @@ let server, tmp;
     });
     client.on("pageerror", (e) => errors.push(e.message));
     await client.goto(base + "/next/index.html");
+    await client.locator(".hero-photo").evaluate((image) => image.decode());
     await client
       .locator("#service option")
       .nth(1)
@@ -81,7 +82,13 @@ let server, tmp;
       ),
       false,
     );
-    await client.locator("#service").selectOption("service-3");
+    await client
+      .getByRole("button", {
+        name: "Выбрать: Окрашивание в один тон",
+        exact: true,
+      })
+      .click();
+    assert.equal(await client.locator("#service").inputValue(), "service-3");
     await client.locator("#master").selectOption("master-1");
     await client.locator("#date").fill(tomorrow);
     await client

@@ -3,138 +3,389 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="theme-color" content="#33251f" />
     <meta
       name="description"
-      content="Салон красоты: услуги, мастера и онлайн-запись на свободное время."
+      content="Салон красоты «11» в Астане. Стрижки, окрашивание и образы для особенных событий. Выберите мастера и удобное время онлайн."
     />
-    <title>Онлайн-запись в салон</title>
+    <title>Салон «11» — искусство быть собой</title>
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2333251f'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' text-anchor='middle' fill='%23f7f5ee'%3E11%3C/text%3E%3C/svg%3E">
     <link rel="stylesheet" href="ui.css" />
+    <link rel="stylesheet" href="../luxury.css" />
     <script src="client.js" defer></script>
   </head>
-  <body>
-    <header>
-      <strong id="brand">Салон красоты «11»</strong>
-      <nav class="links">
-        <a href="#services">Услуги</a><a href="#booking">Записаться</a
-        ><a href="admin.html">Кабинет</a>
+  <body class="luxury-site">
+    <a class="skip-link" href="#booking">Перейти к записи</a>
+    <header class="site-header">
+      <div class="header-location">
+        Астана, Казахстан<span>Красота в вашем ритме</span>
+      </div>
+      <a class="logo" href="#top" aria-label="Салон 11 — главная"
+        ><b>11</b
+        ><span
+          ><span id="brand">Салон красоты «11»</span
+          ><small>Beauty atelier</small></span
+        ></a
+      >
+      <nav class="site-nav" aria-label="Основное меню">
+        <a href="#services">Услуги</a><a href="#team-section">Мастера</a
+        ><a href="#booking"
+          >Записаться
+          <svg
+            class="arrow-icon"
+            viewBox="0 0 16 16"
+            aria-hidden="true"
+            fill="none"
+          >
+            <path
+              d="M3 13 13 3M3 3h10v10"
+              stroke="currentColor"
+              stroke-width="1.2"
+            /></svg
+        ></a>
       </nav>
     </header>
-    <main>
-      <section class="hero">
-        <div>
-          <p class="eyebrow">Время для себя</p>
-          <h1>Ваш образ.<br />Ваше настроение.</h1>
-          <p id="address">Астана, Айтматова 36</p>
+    <main id="top">
+      <section class="editorial-hero" aria-labelledby="hero-title">
+        <img
+          class="hero-photo"
+          src="../assets/luxury-editorial.webp"
+          alt="Иллюстративный образ с мягкими волнами на длинных волосах"
+          fetchpriority="high"
+          width="1536"
+          height="1024"
+        />
+        <div class="hero-copy">
+          <p class="eyebrow">Салон красоты · Астана</p>
+          <h1 id="hero-title">
+            Красота,<br />в которой<br /><em>есть вы.</em>
+          </h1>
+          <p class="hero-description">
+            Точный силуэт. Живой цвет. Ощущение себя.<br />Ваш следующий образ
+            начинается здесь.
+          </p>
+          <a class="button" href="#booking"
+            >Выбрать своё время
+            <span aria-hidden="true"
+              ><svg
+                class="arrow-icon"
+                viewBox="0 0 16 16"
+                aria-hidden="true"
+                fill="none"
+              >
+                <path
+                  d="M3 13 13 3M3 3h10v10"
+                  stroke="currentColor"
+                  stroke-width="1.2"
+                /></svg></span
+          ></a>
+        </div>
+        <div class="hero-bottom">
+          <span id="address">Айтматова 36, Астана</span
+          ><span class="hero-index">Beauty, thoughtfully</span
+          ><a href="#services" aria-label="Перейти к услугам"
+            >Листайте вниз
+            <svg
+              class="arrow-icon down"
+              viewBox="0 0 16 16"
+              aria-hidden="true"
+              fill="none"
+            >
+              <path
+                d="M3 13 13 3M3 3h10v10"
+                stroke="currentColor"
+                stroke-width="1.2"
+              /></svg
+          ></a>
+        </div>
+      </section>
+      <section class="manifesto">
+        <div class="lux-wrap manifesto-inner">
+          <p class="eyebrow">01 / Философия</p>
           <p>
-            Выберите услугу, мастера и удобное время. Администратор подтвердит
-            вашу заявку.
+            Не изменить вас.<br />А увидеть, подчеркнуть<br />и раскрыть
+            <em>вашу красоту.</em>
           </p>
-          <a class="button" href="#booking">Выбрать время →</a>
         </div>
-        <div class="hero-art" aria-hidden="true">11</div>
       </section>
-      <p id="load-error" class="error" role="alert" hidden></p>
-      <section id="services">
-        <h2>Услуги и мастера</h2>
-        <p>Цены указаны от. Окончательная стоимость согласуется с мастером.</p>
-        <div id="catalog" class="grid"></div>
-      </section>
-      <section id="booking" class="panel">
-        <p class="eyebrow">Онлайн-запись</p>
-        <h2>Найдём ваше время</h2>
-        <p id="launch-warning" class="notice" hidden></p>
-        <form id="booking-form">
-          <div class="grid">
+      <p id="load-error" class="error lux-wrap" role="alert" hidden></p>
+      <section id="services" class="lux-section">
+        <div class="lux-wrap">
+          <div class="section-top">
             <div>
-              <label for="service">Услуга</label
-              ><select id="service" required>
-                <option value="">Выберите услугу</option>
-              </select>
+              <p class="eyebrow">02 / Меню красоты</p>
+              <h2>Ваш характер.<br /><em>Наше внимание.</em></h2>
             </div>
-            <div>
-              <label for="master">Мастер</label
-              ><select id="master" required>
-                <option value="">Выберите мастера</option>
-              </select>
-            </div>
-            <div>
-              <label for="date">Дата</label
-              ><input type="date" id="date" required />
-            </div>
+            <p>
+              От лаконичной стрижки до сложного цвета.<br />Выберите услугу — мы
+              найдём время для вас.
+            </p>
           </div>
-          <p id="availability" aria-live="polite">
-            Выберите услугу, мастера и дату.
-          </p>
-          <div id="slots" class="slots" aria-label="Свободное время"></div>
-          <input type="hidden" id="time" />
-          <div class="grid">
-            <div>
-              <label for="name">Ваше имя</label
-              ><input id="name" autocomplete="name" maxlength="80" required />
-            </div>
-            <div>
-              <label for="phone">Телефон</label
-              ><input
-                id="phone"
-                type="tel"
-                autocomplete="tel"
-                placeholder="+7 777 123 45 67"
-                maxlength="20"
-                required
+          <div class="service-layout">
+            <figure class="service-art">
+              <img
+                src="../assets/luxury-ritual.webp"
+                alt="Иллюстративный натюрморт: флакон, гребень и льняное полотенце"
+                loading="lazy"
+                width="1536"
+                height="1024"
               />
+              <figcaption>
+                <span>Детали создают образ</span><span>Иллюстрация</span>
+              </figcaption>
+            </figure>
+            <div>
+              <div id="catalog" class="grid"></div>
+              <p class="service-note">
+                Цены указаны от. Окончательная стоимость зависит от длины волос
+                и сложности работы — согласуем её с вами до начала процедуры.
+              </p>
             </div>
           </div>
-          <label for="client-email">Почта для напоминания (необязательно)</label
-          ><input
-            id="client-email"
-            type="email"
-            autocomplete="email"
-            maxlength="254"
-          />
-          <p class="muted">
-            Письма приходят только если салон подключил службу уведомлений.
-          </p>
-          <label for="comment">Комментарий</label
-          ><textarea id="comment" maxlength="300"></textarea>
-          <label
-            ><input type="checkbox" id="consent" required />Согласен на
-            обработку данных для записи.
-            <a href="privacy.html" target="_blank" rel="noopener"
-              >Политика обработки данных</a
-            ></label
-          >
-          <div id="challenge"></div>
-          <p id="form-error" class="error" role="alert" hidden></p>
-          <button id="submit" disabled>Отправить заявку</button>
-          <p class="muted">
-            Заявка требует подтверждения. Срок ожидания указан после отправки.
-          </p>
-        </form>
-        <div id="success" class="success" hidden>
-          <h3>Заявка принята</h3>
-          <p id="success-text"></p>
-          <a id="cancel-link" href="#"
-            >Сохраните ссылку для самостоятельной отмены</a
-          >
-          <p>Не передавайте эту ссылку другим людям.</p>
         </div>
       </section>
-      <section>
-        <h2>Свяжитесь с нами</h2>
-        <p id="contact-address"></p>
-        <a id="call" class="button secondary" href="tel:+77779487708"
-          >Позвонить</a
-        >
-        <a
-          id="whatsapp"
-          class="button secondary"
-          href="https://wa.me/77779487708"
-          target="_blank"
-          rel="noopener"
-          >WhatsApp</a
-        >
+      <section class="ritual-section">
+        <div class="lux-wrap ritual-grid">
+          <span class="ritual-number" aria-hidden="true">11</span>
+          <div>
+            <p class="eyebrow">Больше, чем новый образ</p>
+            <h2>Время, которое<br />вы дарите себе.</h2>
+          </div>
+          <div>
+            <p>
+              Хороший образ начинается с разговора. Расскажите, что вам
+              нравится, как вы ухаживаете за волосами и чего ждёте от перемен.
+            </p>
+            <p>
+              Мы поможем выбрать услугу и мастера. А вы сможете просто побыть в
+              моменте.
+            </p>
+            <a class="text-link" href="#booking"
+              >Начнём с вашего желания
+              <svg
+                class="arrow-icon"
+                viewBox="0 0 16 16"
+                aria-hidden="true"
+                fill="none"
+              >
+                <path
+                  d="M3 13 13 3M3 3h10v10"
+                  stroke="currentColor"
+                  stroke-width="1.2"
+                /></svg
+            ></a>
+          </div>
+        </div>
+      </section>
+      <section id="team-section" class="lux-section">
+        <div class="lux-wrap">
+          <div class="section-top">
+            <div>
+              <p class="eyebrow">03 / Наши мастера</p>
+              <h2>Красота —<br /><em>в хороших руках.</em></h2>
+            </div>
+            <p>
+              У каждого свой почерк.<br />Найдите мастера, с которым вам по
+              пути.
+            </p>
+          </div>
+          <div id="team" class="team-grid"></div>
+        </div>
+      </section>
+      <section class="booking-shell">
+        <div class="lux-wrap booking-grid">
+          <div class="booking-intro">
+            <p class="eyebrow">04 / Маленький шаг к переменам</p>
+            <h2>Оставьте время<br /><em>для себя.</em></h2>
+            <p>
+              Выберите услугу, мастера и свободный интервал. Администратор
+              свяжется с вами и подтвердит запись.
+            </p>
+            <div class="booking-step"><span>01</span>Выберите свой образ</div>
+            <div class="booking-step"><span>02</span>Найдите удобное время</div>
+            <div class="booking-step">
+              <span>03</span>Дождитесь подтверждения
+            </div>
+          </div>
+          <section id="booking" class="panel">
+            <p class="eyebrow">Ваша запись</p>
+            <h2>Найдём ваше время</h2>
+            <p id="launch-warning" class="notice" hidden></p>
+            <form id="booking-form">
+              <div class="grid">
+                <div>
+                  <label for="service">Услуга</label
+                  ><select id="service" required>
+                    <option value="">Выберите услугу</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="master">Мастер</label
+                  ><select id="master" required>
+                    <option value="">Выберите мастера</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="date">Дата</label
+                  ><input type="date" id="date" required />
+                </div>
+              </div>
+              <p id="availability" aria-live="polite">
+                Выберите услугу, мастера и дату.
+              </p>
+              <div id="slots" class="slots" aria-label="Свободное время"></div>
+              <input type="hidden" id="time" />
+              <div class="grid">
+                <div>
+                  <label for="name">Ваше имя</label
+                  ><input
+                    id="name"
+                    autocomplete="name"
+                    maxlength="80"
+                    required
+                  />
+                </div>
+                <div>
+                  <label for="phone">Телефон</label
+                  ><input
+                    id="phone"
+                    type="tel"
+                    autocomplete="tel"
+                    placeholder="+7 777 123 45 67"
+                    maxlength="20"
+                    required
+                  />
+                </div>
+              </div>
+              <label for="client-email">Почта (необязательно)</label
+              ><input
+                id="client-email"
+                type="email"
+                autocomplete="email"
+                maxlength="254"
+              />
+              <p class="muted">
+                Можно оставить пустым: администратор свяжется с вами по
+                телефону.
+              </p>
+              <label for="comment">Комментарий</label
+              ><textarea id="comment" maxlength="300"></textarea>
+              <label
+                ><input type="checkbox" id="consent" required />Согласен на
+                обработку данных для записи.
+                <a href="privacy.html" target="_blank" rel="noopener"
+                  >Политика обработки данных</a
+                ></label
+              >
+              <div id="challenge"></div>
+              <p id="form-error" class="error" role="alert" hidden></p>
+              <button id="submit" disabled>Отправить заявку</button>
+              <p class="muted">
+                Заявка требует подтверждения. Срок ожидания указан после
+                отправки.
+              </p>
+            </form>
+            <div id="success" class="success" hidden>
+              <h3>Заявка принята</h3>
+              <p id="success-text"></p>
+              <a id="cancel-link" href="#"
+                >Сохраните ссылку для самостоятельной отмены</a
+              >
+              <p>Не передавайте эту ссылку другим людям.</p>
+            </div>
+          </section>
+        </div>
+      </section>
+      <section class="contact-section">
+        <div class="lux-wrap contact-layout">
+          <div>
+            <p class="eyebrow">05 / До встречи</p>
+            <h2>Ваше место<br />для <em>перемен.</em></h2>
+          </div>
+          <div>
+            <div class="contact-detail">
+              <span>Где мы</span>
+              <p id="contact-address">Астана, Айтматова 36</p>
+            </div>
+            <div class="contact-detail">
+              <span>Связаться</span
+              ><a id="call" href="tel:+77779487708">+7 777 948 77 08</a>
+            </div>
+            <div class="contact-links">
+              <a
+                id="whatsapp"
+                href="https://wa.me/77779487708"
+                target="_blank"
+                rel="noopener"
+                >Написать в WhatsApp
+                <svg
+                  class="arrow-icon"
+                  viewBox="0 0 16 16"
+                  aria-hidden="true"
+                  fill="none"
+                >
+                  <path
+                    d="M3 13 13 3M3 3h10v10"
+                    stroke="currentColor"
+                    stroke-width="1.2"
+                  /></svg></a
+              ><a
+                href="https://2gis.kz/astana/search/Айтматова%2036"
+                target="_blank"
+                rel="noopener"
+                >Построить маршрут
+                <svg
+                  class="arrow-icon"
+                  viewBox="0 0 16 16"
+                  aria-hidden="true"
+                  fill="none"
+                >
+                  <path
+                    d="M3 13 13 3M3 3h10v10"
+                    stroke="currentColor"
+                    stroke-width="1.2"
+                  /></svg
+              ></a>
+            </div>
+          </div>
+        </div>
       </section>
     </main>
-    <footer><a href="privacy.html">Обработка персональных данных</a></footer>
+    <footer class="lux-footer">
+      <span class="footer-mark" aria-hidden="true">11</span>
+      <p>© 2026 Салон красоты «11» · Астана</p>
+      <a href="privacy.html">Политика обработки данных</a
+      ><a href="admin.html"
+        >Для администратора
+        <svg
+          class="arrow-icon"
+          viewBox="0 0 16 16"
+          aria-hidden="true"
+          fill="none"
+        >
+          <path
+            d="M3 13 13 3M3 3h10v10"
+            stroke="currentColor"
+            stroke-width="1.2"
+          /></svg
+      ></a>
+    </footer>
+    <div class="mobile-book">
+      <span>Время для вашего образа</span
+      ><a href="#booking"
+        >Записаться
+        <svg
+          class="arrow-icon"
+          viewBox="0 0 16 16"
+          aria-hidden="true"
+          fill="none"
+        >
+          <path
+            d="M3 13 13 3M3 3h10v10"
+            stroke="currentColor"
+            stroke-width="1.2"
+          /></svg
+      ></a>
+    </div>
   </body>
 </html>

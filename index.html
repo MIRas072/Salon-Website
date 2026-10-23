@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#243e34">
+  <meta name="theme-color" content="#33251f">
   <title>Салон красоты «11» — Астана</title>
   <meta name="description" content="Салон красоты «11» в Астане: мужской и женский залы, стрижки, окрашивание, укладки, свадебный макияж. Айтматова 36. Запись онлайн.">
 
@@ -18,7 +18,7 @@
   <meta property="og:image:alt" content="Салон красоты 11 — онлайн-запись в Астане">
 
   <!-- Иконка вкладки -->
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23243e34'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' text-anchor='middle' fill='%23f7f5ee'%3E11%3C/text%3E%3C/svg%3E">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2333251f'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' text-anchor='middle' fill='%23f7f5ee'%3E11%3C/text%3E%3C/svg%3E">
 
   <!-- Шрифты: Playfair Display для заголовков, Inter для текста -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -44,15 +44,16 @@
 
   <script>document.documentElement.classList.add('js');</script>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="luxury.css">
 </head>
-<body>
+<body class="luxury-site legacy-site">
 
   <a href="#booking" class="skip-link">Перейти к записи</a>
 
   <!-- Верхнее меню -->
-  <header class="header">
+  <header class="header site-header"><div class="header-location">Астана, Казахстан<span>Красота в вашем ритме</span></div>
     <a href="#top" class="logo" aria-label="Салон красоты 11 — на главную"><b>11</b><span>Салон красоты<small>Астана · Айтматова 36</small></span></a>
-    <nav class="nav" aria-label="Основное меню">
+    <nav class="nav site-nav" aria-label="Основное меню">
       <a href="#services">Услуги</a>
       <a href="#masters">Мастера</a>
       <a href="#about">О салоне</a>
@@ -74,47 +75,11 @@
   <main id="top">
 
     <!-- Главный экран -->
-    <section class="band hero">
-      <div class="wrap hero-inner">
-        <div class="hero-text">
-          <p class="eyebrow reveal">Салон «11» · Астана</p>
-          <h1 class="reveal">Ваш образ.<br><em>Ваше настроение.</em></h1>
-          <p class="hero-lead reveal">Стрижка, новый цвет или образ для особенного дня. Найдите своего мастера — мы позаботимся об остальном.</p>
-          <div class="hero-buttons reveal">
-            <a href="#booking" class="btn btn-main">Выбрать время <span aria-hidden="true">→</span></a>
-            <a href="#services" class="btn btn-line">Услуги и цены</a>
-          </div>
-          <ul class="facts reveal">
-            <li><span>Ждём вас</span>Айтматова 36, Астана</li>
-            <li><span>Каждый день</span>10:00 – 20:00</li>
-          </ul>
-        </div>
-
-        <div class="hero-art reveal" aria-hidden="true">
-          <div class="art-top"><span>BEAUTY & STYLE</span><span>ASTANA</span></div>
-          <svg class="hair-lines" viewBox="0 0 440 540" fill="none">
-            <g stroke="currentColor" stroke-width="1">
-              <path d="M420-30C90 70 440 260 175 370S100 530-70 580"/>
-              <path d="M400-30C70 70 420 260 155 370S80 530-90 580"/>
-              <path d="M380-30C50 70 400 260 135 370S60 530-110 580"/>
-              <path d="M360-30C30 70 380 260 115 370S40 530-130 580"/>
-              <path d="M340-30C10 70 360 260 95 370S20 530-150 580"/>
-              <path d="M320-30C-10 70 340 260 75 370S0 530-170 580"/>
-              <path d="M300-30C-30 70 320 260 55 370S-20 530-190 580"/>
-              <path d="M440-30C110 70 460 260 195 370S120 530-50 580"/>
-              <path d="M460-30C130 70 480 260 215 370S140 530-30 580"/>
-            </g>
-          </svg>
-          <span class="art-number">11</span>
-          <div class="art-bottom"><span>Красота<br>в деталях.</span>
-            <svg class="art-star" width="44" height="44" viewBox="0 0 44 44" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M22 2v40M2 22h40M8 8l28 28M8 36 36 8"/>
-            </svg>
-          </div>
-          <div class="art-caption">Женский и мужской зал</div>
-        </div>
-      </div>
-    </section>
+    <section class="editorial-hero" aria-labelledby="hero-title">
+  <img class="hero-photo" src="assets/luxury-editorial.webp" alt="Иллюстративный образ с мягкими волнами на длинных волосах" fetchpriority="high" width="1536" height="1024">
+  <div class="hero-copy"><p class="eyebrow">Салон красоты · Астана</p><h1 id="hero-title">Красота,<br>в которой<br><em>есть вы.</em></h1><p class="hero-description">Точный силуэт. Живой цвет. Ощущение себя.<br>Ваш следующий образ начинается здесь.</p><a class="button" href="#booking">Выбрать своё время <span aria-hidden="true"><svg class="arrow-icon" viewBox="0 0 16 16" aria-hidden="true" fill="none"><path d="M3 13 13 3M3 3h10v10" stroke="currentColor" stroke-width="1.2"/></svg></span></a></div>
+  <div class="hero-bottom"><span >Айтматова 36, Астана</span><span class="hero-index">Beauty, thoughtfully</span><a href="#services" aria-label="Перейти к услугам">Листайте вниз <svg class="arrow-icon down" viewBox="0 0 16 16" aria-hidden="true" fill="none"><path d="M3 13 13 3M3 3h10v10" stroke="currentColor" stroke-width="1.2"/></svg></a></div>
+</section><section class="manifesto"><div class="lux-wrap manifesto-inner"><p class="eyebrow">01 / Философия</p><p>Не изменить вас.<br>А увидеть, подчеркнуть<br>и раскрыть <em>вашу красоту.</em></p></div></section>
 
     <!-- Услуги и цены -->
     <section id="services" class="band band-ivory">
@@ -177,21 +142,21 @@
             <h3>Назигуль</h3>
             <p class="master-role">Все услуги салона</p>
             <p>Женский и мужской зал, окрашивание, укладки и свадебный образ.</p>
-            <a href="#booking" class="master-link" data-master="master-1">Записаться к Назигуль <span aria-hidden="true">→</span></a>
+            <a href="#booking" class="master-link" data-master="master-1">Записаться к Назигуль <span aria-hidden="true"><svg class="arrow-icon" viewBox="0 0 16 16" aria-hidden="true" fill="none"><path d="M3 13 13 3M3 3h10v10" stroke="currentColor" stroke-width="1.2"/></svg></span></a>
           </article>
           <article class="master-card">
             <div class="master-mark mark-sand" aria-hidden="true">А<span>02</span></div>
             <h3>Арай</h3>
             <p class="master-role">Стрижки, цвет и укладки</p>
             <p>Услуги женского и мужского зала, кроме свадебного образа.</p>
-            <a href="#booking" class="master-link" data-master="master-2">Записаться к Арай <span aria-hidden="true">→</span></a>
+            <a href="#booking" class="master-link" data-master="master-2">Записаться к Арай <span aria-hidden="true"><svg class="arrow-icon" viewBox="0 0 16 16" aria-hidden="true" fill="none"><path d="M3 13 13 3M3 3h10v10" stroke="currentColor" stroke-width="1.2"/></svg></span></a>
           </article>
           <article class="master-card">
             <div class="master-mark mark-rose" aria-hidden="true">Ж<span>03</span></div>
             <h3>Жазира</h3>
             <p class="master-role">Мужской зал</p>
             <p>Мужские, детские и модельные стрижки.</p>
-            <a href="#booking" class="master-link" data-master="master-3">Записаться к Жазире <span aria-hidden="true">→</span></a>
+            <a href="#booking" class="master-link" data-master="master-3">Записаться к Жазире <span aria-hidden="true"><svg class="arrow-icon" viewBox="0 0 16 16" aria-hidden="true" fill="none"><path d="M3 13 13 3M3 3h10v10" stroke="currentColor" stroke-width="1.2"/></svg></span></a>
           </article>
         </div>
       </div>
@@ -352,7 +317,7 @@
 
   </main>
 
-  <footer class="footer">
+  <footer class="footer lux-footer">
     <div class="wrap footer-inner">
       <p>© 2026 Салон красоты «11», Астана</p>
       <a href="admin.html">Кабинет администратора</a>

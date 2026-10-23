@@ -76,9 +76,11 @@ const server = http.createServer(async (req, res) => {
       /\/next\/[\w.-]+\.(html|js|css|svg)$/.test(file) ||
       [
         root + "/style.css",
+        root + "/luxury.css",
         root + "/admin.css",
         root + "/firebase-config.js",
-      ].includes(file)
+      ].includes(file) ||
+      /^assets\/luxury-[\w-]+\.(jpg|webp|png)$/.test(path.relative(root, file))
     )
   ) {
     res.writeHead(404);
@@ -93,6 +95,9 @@ const server = http.createServer(async (req, res) => {
         ".js": "application/javascript",
         ".css": "text/css",
         ".svg": "image/svg+xml",
+        ".jpg": "image/jpeg",
+        ".webp": "image/webp",
+        ".png": "image/png",
       }[path.extname(file)],
       "X-Content-Type-Options": "nosniff",
       "Cache-Control": "no-store",

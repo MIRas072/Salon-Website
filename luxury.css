@@ -1,0 +1,1353 @@
+/* Shared visual identity for the client pages. Admin controls remain in ui.css. */
+.luxury-site {
+  --ink: #33251f;
+  --paper: #f4f0e8;
+  --muted: #786f65;
+  --line: #d8d0c4;
+  --accent: #957451;
+  --forest: #33251f;
+  --ivory: #f4f0e8;
+  --card: #f8f5ef;
+  --sand: #e6ded1;
+  --mocha: #33251f;
+  --mocha-light: #5f4835;
+  --espresso: #33251f;
+  --gold: #957451;
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+.luxury-site *,
+.luxury-site *::before,
+.luxury-site *::after {
+  box-sizing: border-box;
+}
+.luxury-site {
+  scroll-behavior: smooth;
+}
+.luxury-site a {
+  color: inherit;
+}
+.luxury-site button,
+.luxury-site input,
+.luxury-site select,
+.luxury-site textarea {
+  font: inherit;
+}
+.luxury-site main {
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+.luxury-site .wrap,
+.luxury-site .lux-wrap {
+  width: min(1320px, calc(100% - 112px));
+  margin-inline: auto;
+}
+.luxury-site .site-header {
+  min-height: 100px;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 36px;
+  padding: 22px 56px;
+  background: #f4f0e8;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  position: relative;
+  z-index: 10;
+  color: var(--ink);
+}
+.luxury-site .header-location {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.17em;
+  line-height: 1.9;
+}
+.luxury-site .header-location span {
+  display: block;
+  font-size: 9px;
+  opacity: 0.65;
+}
+.luxury-site .logo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  justify-self: center;
+  text-decoration: none;
+  color: var(--ink);
+}
+.luxury-site .logo b {
+  font:
+    normal 47px/0.85 Georgia,
+    serif;
+  letter-spacing: -0.12em;
+  border-right: 1px solid #b9aa96;
+  padding-right: 18px;
+}
+.luxury-site .logo span {
+  font:
+    normal 13px Georgia,
+    serif;
+  letter-spacing: 0.035em;
+}
+.luxury-site .logo small {
+  display: block;
+  font:
+    8px Arial,
+    sans-serif;
+  letter-spacing: 0.28em;
+  margin-top: 7px;
+  color: var(--muted);
+  text-transform: uppercase;
+}
+.luxury-site .site-nav {
+  justify-self: end;
+  display: flex;
+  align-items: center;
+  gap: 26px;
+}
+.luxury-site .site-nav a {
+  text-decoration: none;
+  font-size: 11px;
+  letter-spacing: 0.025em;
+  white-space: nowrap;
+}
+.luxury-site .site-nav a:last-child {
+  border-bottom: 1px solid #9c866d;
+  padding-bottom: 6px;
+}
+.luxury-site .nav a::after {
+  display: none;
+}
+.luxury-site .mobile-menu {
+  display: none;
+}
+.luxury-site .editorial-hero {
+  min-height: 720px;
+  height: min(790px, calc(100svh - 100px));
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  overflow: hidden;
+  background: #281e19;
+  color: #f7f2e8;
+}
+.luxury-site .hero-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 65% 42%;
+}
+.luxury-site .editorial-hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    #281e19 0%,
+    #281e19f5 22%,
+    #281e19a0 43%,
+    #281e1910 69%,
+    #281e1900 100%
+  );
+  pointer-events: none;
+}
+.luxury-site .hero-copy {
+  position: relative;
+  z-index: 1;
+  grid-column: 1/-1;
+  width: min(1320px, calc(100% - 112px));
+  margin: auto;
+  padding: 58px 0 92px;
+  align-self: center;
+}
+.luxury-site .eyebrow {
+  font:
+    10px/1.7 Arial,
+    Helvetica,
+    sans-serif;
+  letter-spacing: 0.23em;
+  text-transform: uppercase;
+  margin: 0 0 26px;
+}
+.luxury-site .hero-copy .eyebrow {
+  color: #c9b599;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+.luxury-site .hero-copy .eyebrow::before {
+  content: "";
+  height: 1px;
+  width: 35px;
+  background: #9e8160;
+}
+.luxury-site .hero-copy h1 {
+  font:
+    normal clamp(68px, 7.9vw, 122px) / 0.95 Georgia,
+    "Times New Roman",
+    serif;
+  letter-spacing: -0.055em;
+  max-width: 700px;
+  margin: 0 0 29px;
+  color: #f4ecde;
+}
+.luxury-site .hero-copy h1 em {
+  font-weight: 400;
+  color: #c5ad8e;
+}
+.luxury-site .hero-copy .hero-description {
+  max-width: 300px;
+  font-size: 13px;
+  line-height: 1.85;
+  color: #d2c6b5;
+  margin: 0 0 30px;
+}
+.luxury-site .button,
+.luxury-site .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 35px;
+  min-height: 48px;
+  padding: 15px 23px;
+  border: 1px solid var(--ink);
+  border-radius: 0;
+  background: var(--ink);
+  color: #f4f0e8;
+  text-decoration: none;
+  font:
+    11px Arial,
+    sans-serif;
+  letter-spacing: 0.055em;
+  box-shadow: none;
+  transition:
+    background 0.2s,
+    color 0.2s,
+    transform 0.2s;
+}
+.luxury-site .button:hover,
+.luxury-site .btn:hover {
+  background: #604832;
+  color: #fff;
+  transform: translateY(-1px);
+}
+.luxury-site .hero-copy .button {
+  background: #eee4d4;
+  border-color: #eee4d4;
+  color: #30221a;
+  padding-inline: 25px;
+  min-width: 206px;
+}
+.luxury-site .hero-copy .button:hover {
+  background: white;
+}
+.luxury-site .button.secondary,
+.luxury-site .btn-line {
+  background: transparent;
+  color: var(--ink);
+  border-color: #b7a68e;
+}
+.luxury-site button:focus-visible,
+.luxury-site a:focus-visible {
+  outline: 2px solid #b08a56;
+  outline-offset: 5px;
+}
+.luxury-site .hero-bottom {
+  position: absolute;
+  z-index: 2;
+  bottom: 28px;
+  left: 56px;
+  right: 56px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font:
+    9px Arial,
+    sans-serif;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #d3c2ac;
+}
+.luxury-site .hero-bottom a {
+  text-decoration: none;
+}
+.luxury-site .hero-bottom .hero-index {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.luxury-site .hero-index::before {
+  content: "";
+  width: 70px;
+  height: 1px;
+  background: #baa183;
+}
+.luxury-site .manifesto {
+  padding: 88px 0 83px;
+  border-bottom: 1px solid var(--line);
+}
+.luxury-site .manifesto-inner {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 65px;
+  align-items: start;
+}
+.luxury-site .manifesto p:last-child {
+  font:
+    normal clamp(25px, 3vw, 43px) / 1.3 Georgia,
+    serif;
+  letter-spacing: -0.025em;
+  margin: 0;
+  max-width: 760px;
+}
+.luxury-site .manifesto em {
+  color: #927251;
+  font-style: italic;
+}
+.luxury-site .lux-section {
+  padding: 100px 0;
+}
+.luxury-site .section-top {
+  display: flex;
+  justify-content: space-between;
+  gap: 30px;
+  align-items: end;
+  margin-bottom: 44px;
+}
+.luxury-site h2 {
+  font:
+    normal clamp(36px, 4.2vw, 64px) / 1.06 Georgia,
+    serif;
+  letter-spacing: -0.035em;
+  color: var(--ink);
+  margin: 0;
+}
+.luxury-site h2 em {
+  font-weight: 400;
+  color: #8c7052;
+}
+.luxury-site .section-top p {
+  font:
+    12px/1.8 Arial,
+    sans-serif;
+  color: var(--muted);
+  max-width: 300px;
+  margin: 0;
+}
+.luxury-site .section-top .eyebrow {
+  margin-bottom: 17px;
+  color: #917350;
+}
+.luxury-site .section-head {
+  margin-bottom: 40px;
+}
+.luxury-site .section-head h2 {
+  max-width: 750px;
+}
+.luxury-site .section-head .eyebrow {
+  color: #927251;
+  margin-bottom: 19px;
+}
+.luxury-site .section-intro {
+  font-size: 13px;
+  max-width: 450px;
+  margin-top: 20px;
+}
+.luxury-site #services {
+  background: #f4f0e8;
+}
+.luxury-site .service-layout {
+  display: grid;
+  grid-template-columns: 1.06fr 1fr;
+  gap: 70px;
+  align-items: start;
+}
+.luxury-site .service-art {
+  position: sticky;
+  top: 24px;
+  background: #d5c9b8;
+  margin: 0;
+}
+.luxury-site .service-art img {
+  width: 100%;
+  height: 610px;
+  object-fit: cover;
+  display: block;
+  object-position: 73% center;
+}
+.luxury-site .service-art figcaption {
+  padding: 17px 0 0;
+  background: var(--paper);
+  display: flex;
+  justify-content: space-between;
+  font:
+    9px Arial,
+    sans-serif;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+.luxury-site #catalog {
+  display: block;
+}
+.luxury-site #catalog .card {
+  display: grid;
+  grid-template-columns: 34px 1fr auto;
+  column-gap: 15px;
+  align-items: start;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: none;
+  margin: 0;
+  padding: 22px 0;
+  box-shadow: none;
+}
+.luxury-site #catalog .service-number {
+  grid-column: 1;
+  grid-row: 1/4;
+  font:
+    10px Arial,
+    sans-serif;
+  color: #a18d72;
+  padding-top: 6px;
+}
+.luxury-site #catalog h3 {
+  grid-column: 2;
+  font:
+    normal 22px/1.15 Georgia,
+    serif;
+  letter-spacing: -0.015em;
+  margin: 0 0 8px;
+}
+.luxury-site #catalog .service-price {
+  grid-column: 2;
+  font:
+    11px/1.7 Arial,
+    sans-serif;
+  color: #725e49;
+  margin: 0;
+}
+.luxury-site #catalog .service-masters {
+  grid-column: 2;
+  font:
+    10px/1.6 Arial,
+    sans-serif;
+  color: #8a8176;
+  margin: 7px 0 0;
+}
+.luxury-site #catalog button {
+  grid-column: 3;
+  grid-row: 1/4;
+  background: none;
+  border: 1px solid #cec2b0;
+  width: 37px;
+  height: 37px;
+  min-height: 0;
+  padding: 0;
+  border-radius: 50%;
+  color: #6f5439;
+  font-size: 16px;
+  cursor: pointer;
+}
+.luxury-site #catalog button:hover {
+  background: #33251f;
+  color: #fff;
+}
+.luxury-site .service-note {
+  font:
+    11px/1.9 Arial,
+    sans-serif;
+  color: var(--muted);
+  max-width: 550px;
+  margin: 25px 0 0;
+}
+.luxury-site .ritual-section {
+  background: #ded6c9;
+  position: relative;
+  overflow: hidden;
+  padding: 80px 0;
+}
+.luxury-site .ritual-grid {
+  display: grid;
+  grid-template-columns: 0.65fr 1fr 1fr;
+  gap: 70px;
+  align-items: start;
+}
+.luxury-site .ritual-number {
+  font:
+    italic 110px/0.9 Georgia,
+    serif;
+  color: #a98d6b;
+  letter-spacing: -0.08em;
+}
+.luxury-site .ritual-grid h2 {
+  font-size: 42px;
+}
+.luxury-site .ritual-grid p {
+  font:
+    13px/1.9 Arial,
+    sans-serif;
+  color: #675b4e;
+  margin: 0 0 20px;
+}
+.luxury-site .text-link {
+  display: inline-block;
+  font:
+    11px Arial,
+    sans-serif;
+  border-bottom: 1px solid #9d8464;
+  padding-bottom: 8px;
+  text-decoration: none;
+}
+.luxury-site .team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+.luxury-site .team-card {
+  border-top: 1px solid var(--line);
+  padding: 30px 0 10px;
+}
+.luxury-site .team-monogram {
+  height: 210px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e2d9cc;
+  color: #95795b;
+  font:
+    italic 110px Georgia,
+    serif;
+  margin-bottom: 25px;
+  position: relative;
+}
+.luxury-site .team-card:nth-child(2) .team-monogram {
+  background: #d4c7b7;
+}
+.luxury-site .team-card:nth-child(3) .team-monogram {
+  background: #c5b49f;
+  color: #f4efe6;
+}
+.luxury-site .team-card h3 {
+  font:
+    normal 31px Georgia,
+    serif;
+  margin: 0 0 10px;
+}
+.luxury-site .team-card p {
+  font:
+    12px/1.8 Arial,
+    sans-serif;
+  color: var(--muted);
+  min-height: 48px;
+  max-width: 340px;
+}
+.luxury-site .team-card button {
+  background: none;
+  border: 0;
+  border-bottom: 1px solid #9d8464;
+  padding: 0 0 8px;
+  font-size: 11px;
+  color: var(--ink);
+  cursor: pointer;
+}
+.luxury-site .booking-shell {
+  background: #e9e2d6;
+  padding: 96px 0;
+}
+.luxury-site .booking-grid {
+  display: grid;
+  grid-template-columns: 0.7fr 1.3fr;
+  gap: 75px;
+  align-items: start;
+}
+.luxury-site .booking-intro .eyebrow {
+  color: #8e7051;
+}
+.luxury-site .booking-intro h2 {
+  font-size: clamp(40px, 4.5vw, 65px);
+  margin-bottom: 24px;
+}
+.luxury-site .booking-intro p {
+  font:
+    12px/1.9 Arial,
+    sans-serif;
+  color: #7b6b59;
+  max-width: 270px;
+}
+.luxury-site .booking-step {
+  display: flex;
+  gap: 15px;
+  border-top: 1px solid #cbbca8;
+  padding: 18px 0;
+  font:
+    11px/1.6 Arial,
+    sans-serif;
+}
+.luxury-site .booking-step span {
+  font:
+    italic 22px Georgia,
+    serif;
+  color: #967a57;
+}
+.luxury-site #booking.panel {
+  background: #f8f5ef;
+  border: 0;
+  border-radius: 0;
+  padding: 35px;
+  margin: 0;
+}
+.luxury-site #booking h2 {
+  font-size: 34px;
+  margin-bottom: 25px;
+}
+.luxury-site #booking label {
+  font-size: 10px;
+  letter-spacing: 0.03em;
+  margin-top: 20px;
+  color: #685747;
+}
+.luxury-site #booking input,
+.luxury-site #booking select,
+.luxury-site #booking textarea {
+  border: 0;
+  border-bottom: 1px solid #cfc3b2;
+  border-radius: 0;
+  padding: 13px 0;
+  background: transparent;
+  color: #38291f;
+  box-shadow: none;
+  font-size: 13px;
+}
+.luxury-site #booking input:focus,
+.luxury-site #booking select:focus,
+.luxury-site #booking textarea:focus {
+  outline: 1px solid #9c7950;
+  outline-offset: 3px;
+}
+.luxury-site #booking textarea {
+  min-height: 65px;
+}
+.luxury-site #booking .grid {
+  gap: 22px;
+}
+.luxury-site #availability {
+  font-size: 11px;
+  line-height: 1.8;
+  color: #86725b;
+  margin: 24px 0 12px;
+}
+.luxury-site .slots {
+  grid-template-columns: repeat(auto-fit, minmax(105px, 1fr));
+  gap: 7px;
+}
+.luxury-site .slots button,
+.luxury-site .time-slot {
+  font-size: 10px;
+  line-height: 1.6;
+  border: 1px solid #d2c3af;
+  border-radius: 0;
+  background: #f8f5ef;
+  color: #5d4833;
+  padding: 10px;
+  min-height: 46px;
+  box-shadow: none;
+}
+.luxury-site .slots button.selected {
+  background: #33251f;
+  color: #fff;
+  border-color: #33251f;
+}
+.luxury-site .slots button:disabled,
+.luxury-site .time-slot:disabled {
+  background: #e7e1d8;
+  color: #70665b;
+  opacity: 0.7;
+}
+.luxury-site #submit {
+  width: 100%;
+  border-radius: 0;
+  background: #33251f;
+  color: #f4eee3;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  padding: 18px;
+  min-height: 52px;
+  margin-top: 22px;
+  border: 1px solid #33251f;
+}
+.luxury-site #submit:disabled {
+  opacity: 0.4;
+}
+.luxury-site #booking .muted,
+.luxury-site #booking .consent {
+  font:
+    10px/1.8 Arial,
+    sans-serif;
+  color: #867867;
+}
+.luxury-site #booking input[type="checkbox"] {
+  width: auto;
+  margin-right: 6px;
+  accent-color: #78583b;
+}
+.luxury-site .notice {
+  border-radius: 0;
+  background: #eee1c6;
+  font-size: 12px;
+}
+.luxury-site .error {
+  border-radius: 0;
+  font-size: 12px;
+}
+.luxury-site .success {
+  background: #e9ede1;
+  border-radius: 0;
+  color: #394630;
+}
+.luxury-site .contact-section {
+  padding: 85px 0 90px;
+  background: #30231c;
+  color: #eee5d6;
+}
+.luxury-site .contact-section h2 {
+  color: #eee5d6;
+  font-size: clamp(44px, 6vw, 82px);
+  max-width: 600px;
+}
+.luxury-site .contact-section .eyebrow {
+  color: #b29a7d;
+}
+.luxury-site .contact-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: 80px;
+  align-items: end;
+}
+.luxury-site .contact-detail {
+  padding: 20px 0;
+  border-bottom: 1px solid #5a4637;
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 22px;
+  font-size: 12px;
+  line-height: 1.8;
+}
+.luxury-site .contact-detail > span {
+  font-size: 9px;
+  letter-spacing: 0.1em;
+  color: #ae987b;
+  text-transform: uppercase;
+}
+.luxury-site .contact-detail p {
+  margin: 0;
+}
+.luxury-site .contact-detail a {
+  text-decoration: none;
+}
+.luxury-site .contact-links {
+  display: flex;
+  gap: 30px;
+  margin-top: 25px;
+}
+.luxury-site .contact-links a {
+  font-size: 11px;
+  text-decoration: none;
+  border-bottom: 1px solid #967a57;
+  padding-bottom: 8px;
+}
+.luxury-site footer.lux-footer {
+  background: #30231c;
+  color: #b9a68d;
+  border-top: 1px solid #5a4637;
+  padding: 25px 56px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  font:
+    9px Arial,
+    sans-serif;
+  letter-spacing: 0.04em;
+}
+.luxury-site footer.lux-footer p {
+  margin: 0;
+}
+.luxury-site footer.lux-footer a {
+  text-decoration: none;
+}
+.luxury-site .footer-mark {
+  font:
+    30px Georgia,
+    serif;
+  color: #e1d0b9;
+  letter-spacing: -0.1em;
+}
+.luxury-site .mobile-book {
+  display: none;
+}
+/* Existing public form keeps its tested IDs and Firebase integration. */
+.legacy-site .band {
+  padding: 90px 0;
+  background: var(--paper);
+}
+.legacy-site .editorial-hero {
+  padding: 0;
+}
+.legacy-site .price-grid {
+  gap: 28px;
+}
+.legacy-site .price-card {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+  padding: 25px 0;
+  border-top: 1px solid #bba88f;
+}
+.legacy-site .card-head {
+  border: 0;
+  padding: 0 0 20px;
+}
+.legacy-site .card-head h3 {
+  font:
+    normal 32px Georgia,
+    serif;
+}
+.legacy-site .card-number {
+  color: #9f8261;
+}
+.legacy-site .prices li {
+  padding: 17px 0;
+  border-color: var(--line);
+  font-size: 13px;
+}
+.legacy-site .prices b {
+  font-size: 13px;
+  color: #70553b;
+}
+.legacy-site .pc-women {
+  background: transparent;
+}
+.legacy-site .note {
+  font-size: 11px;
+  color: var(--muted);
+}
+.legacy-site .band-team {
+  background: #e6ded2;
+}
+.legacy-site .master-card {
+  border: 0;
+  border-radius: 0;
+  border-top: 1px solid #bfad94;
+  background: transparent;
+  padding: 25px 0;
+  box-shadow: none;
+}
+.legacy-site .master-mark {
+  border-radius: 0;
+  background: #d5c7b4;
+  color: #8c6f4f;
+}
+.legacy-site .master-card h3 {
+  font:
+    normal 32px Georgia,
+    serif;
+}
+.legacy-site .master-role {
+  font-size: 12px;
+  color: #7e6245;
+}
+.legacy-site .master-link {
+  font-size: 11px;
+  color: var(--ink);
+}
+.legacy-site .band-mocha {
+  background: #33251f;
+  color: #e6d9c7;
+}
+.legacy-site .band-mocha h2 {
+  color: #eee5d8;
+}
+.legacy-site .about-text {
+  font:
+    normal 23px/1.6 Georgia,
+    serif;
+}
+.legacy-site .band-mocha .feature {
+  border-color: #705b44;
+}
+.legacy-site .band-mocha .feature b {
+  color: #ccb48f;
+}
+.legacy-site .band-booking {
+  background: #e6ded1;
+}
+.legacy-site .form {
+  background: #f8f5ef;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.legacy-site .form input,
+.legacy-site .form select,
+.legacy-site .form textarea {
+  border-radius: 0;
+  border-color: #c9bba7;
+}
+.legacy-site .contact-grid .info-card {
+  border: 0;
+  border-top: 1px solid #b9a68b;
+  background: none;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 25px 0;
+}
+.legacy-site .info-card > span {
+  color: #96734d;
+}
+.legacy-site .info-card p {
+  font:
+    normal 23px/1.4 Georgia,
+    serif;
+}
+.legacy-site .quickbar {
+  background: #f4f0e8;
+  border-color: #c6b59c;
+}
+.legacy-site .quickbar a {
+  color: #33251f;
+}
+.legacy-site .quickbar .quick-main {
+  background: #33251f;
+  color: #f5eee3;
+}
+.legacy-site .reveal {
+  opacity: 1;
+  transform: none;
+}
+@media (min-width: 1650px) {
+  .luxury-site .hero-photo {
+    object-position: 60% 40%;
+  }
+}
+@media (max-width: 1000px) {
+  .luxury-site .site-header {
+    gap: 20px;
+    padding: 22px 30px;
+    grid-template-columns: auto 1fr;
+  }
+  .luxury-site .header-location {
+    display: none;
+  }
+  .luxury-site .logo {
+    justify-self: start;
+  }
+  .luxury-site .site-nav {
+    gap: 18px;
+  }
+  .luxury-site .wrap,
+  .luxury-site .lux-wrap,
+  .luxury-site .hero-copy {
+    width: calc(100% - 60px);
+  }
+  .luxury-site .editorial-hero {
+    min-height: 660px;
+  }
+  .luxury-site .hero-copy h1 {
+    font-size: 85px;
+  }
+  .luxury-site .hero-photo {
+    inset: 0;
+    width: 100%;
+    object-position: 64% center;
+  }
+  .luxury-site .hero-bottom {
+    left: 30px;
+    right: 30px;
+  }
+  .luxury-site .service-layout {
+    gap: 35px;
+  }
+  .luxury-site .service-art img {
+    height: 570px;
+  }
+  .luxury-site .booking-grid {
+    gap: 35px;
+    grid-template-columns: 0.65fr 1fr;
+  }
+  .luxury-site .ritual-grid {
+    gap: 35px;
+  }
+  .luxury-site footer.lux-footer {
+    padding-inline: 30px;
+  }
+  .luxury-site .site-nav a:nth-child(2) {
+    display: none;
+  }
+}
+@media (max-width: 650px) {
+  .luxury-site .site-header {
+    min-height: 78px;
+    padding: 17px 22px;
+    gap: 18px;
+  }
+  .luxury-site .logo b {
+    font-size: 37px;
+    padding-right: 14px;
+  }
+  .luxury-site .logo span {
+    font-size: 11px;
+  }
+  .luxury-site .logo small {
+    font-size: 7px;
+  }
+  .luxury-site .site-nav {
+    gap: 12px;
+  }
+  .luxury-site .site-nav a {
+    display: none !important;
+  }
+  .luxury-site .site-nav a:last-child {
+    display: block !important;
+    font-size: 10px;
+  }
+  .luxury-site .wrap,
+  .luxury-site .lux-wrap,
+  .luxury-site .hero-copy {
+    width: calc(100% - 44px);
+  }
+  .luxury-site .editorial-hero {
+    display: flex;
+    min-height: 740px;
+    height: calc(100svh - 78px);
+    max-height: 900px;
+    align-items: end;
+  }
+  .luxury-site .hero-photo {
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-position: 67% center;
+  }
+  .luxury-site .editorial-hero::after {
+    background: linear-gradient(
+      0deg,
+      #281e19 0%,
+      #281e19d9 29%,
+      #281e1940 66%,
+      #281e1910 100%
+    );
+  }
+  .luxury-site .hero-copy {
+    margin: 0 22px;
+    padding: 260px 0 95px;
+    align-self: end;
+  }
+  .luxury-site .hero-copy h1 {
+    font-size: clamp(57px, 15vw, 84px);
+    max-width: 430px;
+    line-height: 0.99;
+    letter-spacing: -0.05em;
+    margin-bottom: 20px;
+  }
+  .luxury-site .hero-copy .eyebrow {
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    margin-bottom: 18px;
+  }
+  .luxury-site .hero-copy .hero-description {
+    font-size: 11px;
+    line-height: 1.8;
+    max-width: 240px;
+    margin-bottom: 21px;
+  }
+  .luxury-site .hero-copy .button {
+    min-width: 190px;
+    min-height: 45px;
+    font-size: 10px;
+  }
+  .luxury-site .hero-bottom {
+    left: 22px;
+    right: 22px;
+    bottom: 23px;
+    font-size: 7px;
+    letter-spacing: 0.12em;
+  }
+  .luxury-site .hero-index::before {
+    width: 30px;
+  }
+  .luxury-site .manifesto {
+    padding: 52px 0;
+  }
+  .luxury-site .manifesto-inner {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  .luxury-site .manifesto .eyebrow {
+    font-size: 9px;
+    margin-bottom: 15px;
+  }
+  .luxury-site .manifesto p:last-child {
+    font-size: 27px;
+    line-height: 1.35;
+  }
+  .luxury-site .lux-section,
+  .legacy-site .band {
+    padding: 58px 0;
+  }
+  .legacy-site .editorial-hero {
+    padding: 0;
+  }
+  .luxury-site .section-top {
+    display: block;
+    margin-bottom: 30px;
+  }
+  .luxury-site h2 {
+    font-size: 39px;
+  }
+  .luxury-site .section-top p {
+    font-size: 11px;
+    margin-top: 18px;
+  }
+  .luxury-site .service-layout {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .luxury-site .service-art {
+    position: static;
+  }
+  .luxury-site .service-art img {
+    height: 360px;
+    object-position: 70% center;
+  }
+  .luxury-site .service-art figcaption {
+    font-size: 8px;
+  }
+  .luxury-site #catalog .card {
+    padding: 20px 0;
+    column-gap: 8px;
+    grid-template-columns: 25px 1fr auto;
+  }
+  .luxury-site #catalog h3 {
+    font-size: 23px;
+  }
+  .luxury-site #catalog .service-price {
+    font-size: 11px;
+  }
+  .luxury-site #catalog .service-masters {
+    font-size: 10px;
+  }
+  .luxury-site .ritual-section {
+    padding: 50px 0;
+  }
+  .luxury-site .ritual-grid {
+    grid-template-columns: 1fr;
+    gap: 25px;
+  }
+  .luxury-site .ritual-number {
+    font-size: 74px;
+  }
+  .luxury-site .ritual-grid h2 {
+    font-size: 40px;
+  }
+  .luxury-site .ritual-grid p {
+    font-size: 12px;
+  }
+  .luxury-site .team-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+  .luxury-site .team-card {
+    display: grid;
+    grid-template-columns: 92px 1fr;
+    column-gap: 20px;
+    padding: 22px 0 0;
+  }
+  .luxury-site .team-monogram {
+    grid-column: 1;
+    grid-row: 1/4;
+    height: 120px;
+    font-size: 65px;
+    margin: 0;
+  }
+  .luxury-site .team-card h3,
+  .luxury-site .team-card p,
+  .luxury-site .team-card button {
+    grid-column: 2;
+  }
+  .luxury-site .team-card h3 {
+    font-size: 28px;
+  }
+  .luxury-site .team-card p {
+    font-size: 11px;
+    min-height: 0;
+    margin: 5px 0 14px;
+  }
+  .luxury-site .team-card button {
+    justify-self: start;
+    font-size: 10px;
+  }
+  .luxury-site .booking-shell {
+    padding: 55px 0;
+  }
+  .luxury-site .booking-grid {
+    grid-template-columns: 1fr;
+    gap: 30px;
+  }
+  .luxury-site .booking-intro h2 {
+    font-size: 43px;
+  }
+  .luxury-site .booking-intro p {
+    max-width: 100%;
+  }
+  .luxury-site .booking-step {
+    display: none;
+  }
+  .luxury-site #booking.panel {
+    padding: 24px 18px;
+  }
+  .luxury-site #booking .grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .luxury-site #booking h2 {
+    font-size: 29px;
+  }
+  .luxury-site .slots {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .luxury-site .slots button {
+    padding: 8px 3px;
+    font-size: 9px;
+  }
+  .luxury-site .contact-section {
+    padding: 55px 0;
+  }
+  .luxury-site .contact-layout {
+    grid-template-columns: 1fr;
+    gap: 35px;
+  }
+  .luxury-site .contact-section h2 {
+    font-size: 49px;
+  }
+  .luxury-site footer.lux-footer {
+    padding: 25px 22px 90px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    line-height: 1.8;
+  }
+  .luxury-site .footer-mark {
+    grid-row: 1/3;
+    font-size: 48px;
+  }
+  .luxury-site footer.lux-footer a,
+  .luxury-site footer.lux-footer p {
+    font-size: 8px;
+  }
+  .luxury-site .mobile-book {
+    position: fixed;
+    z-index: 25;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #f4f0e8;
+    border-top: 1px solid #d5c7b5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+  }
+  .luxury-site .mobile-book > span {
+    font:
+      10px Arial,
+      sans-serif;
+    color: #76614b;
+  }
+  .luxury-site .mobile-book a {
+    background: #33251f;
+    color: #f6ede0;
+    padding: 14px 20px;
+    text-decoration: none;
+    font:
+      10px Arial,
+      sans-serif;
+  }
+  .legacy-site .about-text {
+    font-size: 21px;
+  }
+  .legacy-site .form {
+    padding: 23px 18px;
+  }
+  .legacy-site .quickbar {
+    z-index: 30;
+  }
+  .luxury-site .grid > * {
+    min-width: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .luxury-site,
+  .luxury-site * {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
+.luxury-site .skip-link {
+  position: absolute;
+  left: 20px;
+  top: 10px;
+  z-index: 100;
+  transform: translateY(-200%);
+  background: #f4f0e8;
+  color: #33251f;
+  padding: 14px 22px;
+  font-size: 12px;
+}
+.luxury-site .skip-link:focus {
+  transform: translateY(0);
+}
+
+.luxury-site .arrow-icon {
+  width: 13px;
+  height: 13px;
+  display: inline-block;
+  vertical-align: middle;
+  flex-shrink: 0;
+}
+.luxury-site .arrow-icon.down {
+  transform: rotate(135deg);
+}
+.luxury-site .team-card button .arrow-icon {
+  margin-left: 12px;
+}
+.luxury-site #catalog button .arrow-icon {
+  width: 12px;
+  height: 12px;
+}
+
+/* Native 16px controls prevent unwanted zoom on iOS. */
+@media (max-width: 650px) {
+  .luxury-site #booking input,
+  .luxury-site #booking select,
+  .luxury-site #booking textarea {
+    font-size: 16px;
+  }
+}
+.luxury-site #catalog .service-masters {
+  color: #72675b;
+}
+.luxury-site .service-note {
+  color: #6f655b;
+}
+.luxury-site #availability {
+  color: #75614d;
+}
